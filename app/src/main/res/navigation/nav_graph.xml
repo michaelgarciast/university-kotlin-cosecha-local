@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <!-- Auth Destinations -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.garcia.cosechalocal.ui.auth.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_recoverPasswordFragment"
+            app:destination="@id/recoverPasswordFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_buyerHome"
+            app:destination="@id/navigation_buyer_home"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_sellerDashboard"
+            app:destination="@id/navigation_seller_dashboard"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_adminDashboard"
+            app:destination="@id/navigation_admin_dashboard"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.garcia.cosechalocal.ui.auth.RegisterFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recoverPasswordFragment"
+        android:name="com.garcia.cosechalocal.ui.auth.RecoverPasswordFragment"
+        android:label="Recuperar Contraseña"
+        tools:layout="@layout/fragment_recover_password">
+        <action
+            android:id="@+id/action_recoverPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- Buyer Role Destinations -->
+    <fragment
+        android:id="@+id/navigation_buyer_home"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_buyer_home"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_buyer_search"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_buyer_search"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_buyer_cart"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_buyer_cart"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_buyer_orders"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_buyer_orders"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_buyer_profile"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_buyer_profile"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <!-- Seller Role Destinations -->
+    <fragment
+        android:id="@+id/navigation_seller_dashboard"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_seller_dashboard"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_seller_products"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_seller_products"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_seller_orders"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_seller_orders"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_seller_store"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_seller_store"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <!-- Admin Role Destinations -->
+    <fragment
+        android:id="@+id/navigation_admin_dashboard"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_admin_dashboard"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_admin_users"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_admin_users"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_admin_products"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_admin_products"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_admin_payments"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_admin_payments"
+        tools:layout="@layout/fragment_placeholder" />
+
+    <fragment
+        android:id="@+id/navigation_admin_settings"
+        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:label="@string/menu_admin_settings"
+        tools:layout="@layout/fragment_placeholder" />
+
+</navigation>

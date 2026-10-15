@@ -1,3 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CosechaLocal</string>
+    <!-- App info -->
+    <string name="app_name">Cosecha Local</string>
+    <string name="app_slogan">Del campo colombiano a tu mesa</string>
+
+    <!-- Splash Screen -->
+    <string name="splash_logo_desc">Logo Cosecha Local</string>
+
+    <!-- Auth - Common -->
+    <string name="email_hint">Correo electrónico</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="confirm_password_hint">Confirmar contraseña</string>
+    <string name="full_name_hint">Nombre completo</string>
+    <string name="back_to_login">Volver al inicio de sesión</string>
+    <string name="role_select_title">Selecciona el rol de prueba:</string>
+    <string name="role_buyer">Comprador</string>
+    <string name="role_seller">Vendedor</string>
+    <string name="role_admin">Administrador</string>
+
+    <!-- Auth - Login -->
+    <string name="login_title">¡Bienvenido!</string>
+    <string name="login_subtitle">Ingresa a tu cuenta de Cosecha Local</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="btn_login_fingerprint">Ingresar con huella</string>
+    <string name="forgot_password_link">¿Olvidaste tu contraseña?</string>
+    <string name="register_link">¿No tienes cuenta? Regístrate aquí</string>
+
+    <!-- Auth - Register -->
+    <string name="register_title">Crear cuenta</string>
+    <string name="register_subtitle">Únete a la red del campo colombiano</string>
+    <string name="register_role_title">Tipo de perfil:</string>
+    <string name="btn_register">Registrarse</string>
+    <string name="accept_terms">Acepto los términos y condiciones y la política de tratamiento de datos personales</string>
+
+    <!-- Auth - Recover Password -->
+    <string name="recover_password_title">Recuperar contraseña</string>
+    <string name="recover_password_subtitle">Ingresa tu correo registrado y te enviaremos las instrucciones de restablecimiento.</string>
+    <string name="btn_send_link">Enviar enlace</string>
+    <string name="recover_link_sent">Se ha enviado el enlace de recuperación a tu correo electrónico.</string>
+
+    <!-- Validation & Error Messages -->
+    <string name="error_empty_email">Por favor ingresa tu correo electrónico</string>
+    <string name="error_invalid_email">Ingresa un correo electrónico válido</string>
+    <string name="error_empty_password">Por favor ingresa tu contraseña</string>
+    <string name="error_password_length">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="error_password_mismatch">Las contraseñas no coinciden</string>
+    <string name="error_empty_name">Por favor ingresa tu nombre completo</string>
+    <string name="error_accept_terms">Debes aceptar los términos y políticas para continuar</string>
+    <string name="register_success">Registro exitoso. ¡Inicia sesión con tu nueva cuenta!</string>
+
+    <!-- Biometrics -->
+    <string name="biometric_prompt_title">Autenticación biométrica</string>
+    <string name="biometric_prompt_subtitle">Accede a Cosecha Local con tu huella dactilar</string>
+    <string name="biometric_prompt_cancel">Cancelar</string>
+    <string name="biometric_error">Error en la autenticación biométrica</string>
+    <string name="biometric_simulated">Autenticación biométrica exitosa (Simulada)</string>
+
+    <!-- Menu Items - Buyer -->
+    <string name="menu_buyer_home">Inicio</string>
+    <string name="menu_buyer_search">Buscar</string>
+    <string name="menu_buyer_cart">Carrito</string>
+    <string name="menu_buyer_orders">Pedidos</string>
+    <string name="menu_buyer_profile">Perfil</string>
+
+    <!-- Menu Items - Seller -->
+    <string name="menu_seller_dashboard">Panel</string>
+    <string name="menu_seller_products">Productos</string>
+    <string name="menu_seller_orders">Pedidos</string>
+    <string name="menu_seller_store">Tienda</string>
+
+    <!-- Menu Items - Admin -->
+    <string name="menu_admin_dashboard">Panel</string>
+    <string name="menu_admin_users">Usuarios</string>
+    <string name="menu_admin_products">Productos</string>
+    <string name="menu_admin_payments">Pagos</string>
+    <string name="menu_admin_settings">Ajustes</string>
+
+    <!-- Placeholders & Generic UI -->
+    <string name="placeholder_title">Pantalla en construcción</string>
+    <string name="placeholder_message">Estamos trabajando para traerte la mejor experiencia del campo colombiano en esta sección.</string>
+    <string name="btn_logout">Cerrar sesión</string>
 </resources>

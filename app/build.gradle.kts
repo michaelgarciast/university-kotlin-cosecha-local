@@ -4,11 +4,7 @@ plugins {
 
 android {
     namespace = "com.garcia.cosechalocal"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.garcia.cosechalocal"

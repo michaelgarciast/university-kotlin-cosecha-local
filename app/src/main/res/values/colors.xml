@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Brand Palette -->
+    <color name="primary_green">#2E7D32</color>
+    <color name="dark_green">#1B4D2B</color>
+    <color name="amber_accent">#F9A825</color>
+    <color name="bg_light">#F5F8F1</color>
+    <color name="error_red">#C62828</color>
+
+    <!-- Neutral & Surface Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="text_primary">#1B2E1C</color>
+    <color name="text_secondary">#556B58</color>
+    <color name="card_surface">#FFFFFF</color>
+    <color name="input_background">#EFEFEF</color>
+    <color name="divider_color">#C8D6C9</color>
+    <color name="chip_selected_bg">#E8F5E9</color>
 </resources>
