@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_medium">
+
+        <TextView
+            android:id="@+id/tvProfileTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_title"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_header"
+            android:textStyle="bold" />
+
+        <!-- User Header Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivAvatar"
+                android:layout_width="@dimen/profile_avatar_size"
+                android:layout_height="@dimen/profile_avatar_size"
+                android:background="@drawable/bg_product_image"
+                android:contentDescription="@string/cd_user_avatar"
+                android:padding="@dimen/spacing_medium"
+                android:src="@drawable/ic_person"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                app:tint="@color/primary_green" />
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:text="@string/profile_sample_name"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_title"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvUserEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/profile_sample_email"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body" />
+
+            <TextView
+                android:id="@+id/tvUserPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/profile_sample_phone"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
+
+        <!-- Main Address Card -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CosechaLocal.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_address_label"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_caption" />
+
+                <TextView
+                    android:id="@+id/tvUserAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/profile_sample_address"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_subtitle"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Settings Card (Fingerprint Switch) -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CosechaLocal.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchBiometrics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:minHeight="48dp"
+                android:padding="@dimen/spacing_medium"
+                android:text="@string/biometric_switch_label"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_subtitle"
+                app:thumbTint="@color/primary_green"
+                app:trackTint="@color/chip_selected_bg" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Actions -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEditProfile"
+            style="@style/Widget.CosechaLocal.Button.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/btn_edit_profile"
+            app:icon="@drawable/ic_edit"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            style="@style/Widget.CosechaLocal.Button.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/btn_logout"
+            app:icon="@drawable/ic_logout"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDeleteAccount"
+            style="@style/Widget.CosechaLocal.Button.Danger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/btn_delete_account" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

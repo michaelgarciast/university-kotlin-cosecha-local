@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.CosechaLocal.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_small">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_small">
+
+        <ImageView
+            android:id="@+id/ivProductImage"
+            android:layout_width="@dimen/cart_item_image_size"
+            android:layout_height="@dimen/cart_item_image_size"
+            android:background="@drawable/bg_product_image"
+            android:contentDescription="@string/cd_product_image"
+            android:padding="@dimen/spacing_small"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_product_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_body"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btnRemove"
+            app:layout_constraintStart_toEndOf="@id/ivProductImage"
+            app:layout_constraintTop_toTopOf="@id/ivProductImage"
+            tools:text="Café de origen 500 g" />
+
+        <TextView
+            android:id="@+id/tvProducerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_caption"
+            app:layout_constraintEnd_toStartOf="@id/btnRemove"
+            app:layout_constraintStart_toStartOf="@id/tvProductName"
+            app:layout_constraintTop_toBottomOf="@id/tvProductName"
+            tools:text="Finca El Cafetal" />
+
+        <TextView
+            android:id="@+id/tvUnitPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_caption"
+            app:layout_constraintEnd_toStartOf="@id/btnRemove"
+            app:layout_constraintStart_toStartOf="@id/tvProductName"
+            app:layout_constraintTop_toBottomOf="@id/tvProducerName"
+            tools:text="$32.000 c/u" />
+
+        <ImageButton
+            android:id="@+id/btnRemove"
+            android:layout_width="@dimen/icon_button_min_size"
+            android:layout_height="@dimen/icon_button_min_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_remove_item"
+            android:padding="12dp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutQuantitySelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:background="@drawable/bg_quantity_selector"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivProductImage">
+
+            <ImageButton
+                android:id="@+id/btnDecrease"
+                android:layout_width="@dimen/icon_button_min_size"
+                android:layout_height="@dimen/icon_button_min_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_decrease_quantity"
+                android:src="@drawable/ic_remove"
+                app:tint="@color/primary_green" />
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="32dp"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_subtitle"
+                android:textStyle="bold"
+                tools:text="2" />
+
+            <ImageButton
+                android:id="@+id/btnIncrease"
+                android:layout_width="@dimen/icon_button_min_size"
+                android:layout_height="@dimen/icon_button_min_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_increase_quantity"
+                android:src="@drawable/ic_add"
+                app:tint="@color/primary_green" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvItemSubtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_green"
+            android:textSize="@dimen/text_size_subtitle"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/layoutQuantitySelector"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/layoutQuantitySelector"
+            tools:text="$64.000" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

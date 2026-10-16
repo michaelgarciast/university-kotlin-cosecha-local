@@ -61,21 +61,33 @@
     <!-- Buyer Role Destinations -->
     <fragment
         android:id="@+id/navigation_buyer_home"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.buyer.HomeFragment"
         android:label="@string/menu_buyer_home"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_buyer_home_to_productDetail"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_buyer_search"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.buyer.CatalogFragment"
         android:label="@string/menu_buyer_search"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_catalog">
+        <action
+            android:id="@+id/action_buyer_search_to_productDetail"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_buyer_cart"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.buyer.CartFragment"
         android:label="@string/menu_buyer_cart"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_cart">
+        <action
+            android:id="@+id/action_buyer_cart_to_checkout"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_buyer_orders"
@@ -85,9 +97,25 @@
 
     <fragment
         android:id="@+id/navigation_buyer_profile"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.buyer.ProfileFragment"
         android:label="@string/menu_buyer_profile"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.garcia.cosechalocal.ui.buyer.ProductDetailFragment"
+        android:label="@string/product_detail_title"
+        tools:layout="@layout/fragment_product_detail">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.garcia.cosechalocal.ui.buyer.CheckoutFragment"
+        android:label="@string/checkout_title"
+        tools:layout="@layout/fragment_checkout" />
 
     <!-- Seller Role Destinations -->
     <fragment

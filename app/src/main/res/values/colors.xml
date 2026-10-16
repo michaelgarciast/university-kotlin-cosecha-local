@@ -16,4 +16,6 @@
     <color name="input_background">#EFEFEF</color>
     <color name="divider_color">#C8D6C9</color>
     <color name="chip_selected_bg">#E8F5E9</color>
+    <color name="image_placeholder_bg">#EAF2EB</color>
+    <color name="light_gray">#F0F0F0</color>
 </resources>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_medium">
+
+        <!-- Top Header Back Button + Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="@dimen/icon_button_min_size"
+                android:layout_height="@dimen/icon_button_min_size"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/cd_back_button"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/primary_green" />
+
+            <TextView
+                android:id="@+id/tvCheckoutTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:text="@string/checkout_title"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_header"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Delivery Address Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/delivery_address_section"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilAddress"
+            style="@style/Widget.CosechaLocal.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:startIconDrawable="@drawable/ic_location">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/delivery_address_hint"
+                android:inputType="textPostalAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUseLocation"
+            style="@style/Widget.CosechaLocal.Button.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/btn_use_location"
+            app:icon="@drawable/ic_location" />
+
+        <!-- Payment Method Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/payment_method_section"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CosechaLocal.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small">
+
+            <RadioGroup
+                android:id="@+id/rgPaymentMethods"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_small">
+
+                <RadioButton
+                    android:id="@+id/rbCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:drawableStart="@drawable/ic_credit_card"
+                    android:drawablePadding="@dimen/spacing_medium"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@string/payment_card"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_subtitle" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color" />
+
+                <RadioButton
+                    android:id="@+id/rbPse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_bank"
+                    android:drawablePadding="@dimen/spacing_medium"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@string/payment_pse"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_subtitle" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color" />
+
+                <RadioButton
+                    android:id="@+id/rbNequi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_phone_payment"
+                    android:drawablePadding="@dimen/spacing_medium"
+                    android:minHeight="48dp"
+                    android:padding="@dimen/spacing_small"
+                    android:text="@string/payment_nequi"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_subtitle" />
+
+            </RadioGroup>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Order Summary Card -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/summary_title"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CosechaLocal.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/cart_subtotal"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body" />
+
+                    <TextView
+                        android:id="@+id/tvSubtotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_size_body"
+                        android:textStyle="bold"
+                        tools:text="$32.000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/cart_shipping"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body" />
+
+                    <TextView
+                        android:id="@+id/tvShipping"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cart_shipping_price"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_size_body"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:background="@color/divider_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/cart_total"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_size_subtitle"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primary_green"
+                        android:textSize="@dimen/text_size_title"
+                        android:textStyle="bold"
+                        tools:text="$39.000" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Pay Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPay"
+            style="@style/Widget.CosechaLocal.Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/btn_pay" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -80,4 +80,84 @@
     <string name="placeholder_title">Pantalla en construcción</string>
     <string name="placeholder_message">Estamos trabajando para traerte la mejor experiencia del campo colombiano en esta sección.</string>
     <string name="btn_logout">Cerrar sesión</string>
+
+    <!-- Buyer Role - Home & Catalog -->
+    <string name="home_location_header">Cerca de ti: Medellín</string>
+    <string name="home_nearby_producers">Productores cercanos</string>
+    <string name="search_hint">Buscar productos o productores…</string>
+    <string name="category_all">Todo</string>
+    <string name="category_cafe">Café</string>
+    <string name="category_frutas">Frutas</string>
+    <string name="category_lacteos">Lácteos</string>
+    <string name="category_miel">Miel</string>
+    <string name="category_panela">Panela</string>
+    <string name="catalog_title">Catálogo de Productos</string>
+    <string name="no_products_found">No se encontraron productos para tu búsqueda.</string>
+
+    <!-- Product Detail -->
+    <string name="product_detail_title">Detalle del Producto</string>
+    <string name="product_stock">Stock: %d disp.</string>
+    <string name="producer_card_title">Productor local</string>
+    <string name="btn_view_map">Ver mapa</string>
+    <string name="quantity_label">Cantidad:</string>
+    <string name="btn_add_to_cart">Agregar al carrito</string>
+    <string name="added_to_cart_toast">%1$s (%2$d) agregado al carrito</string>
+    <string name="producer_map_simulated">Ubicación de %s desplegada en el mapa (Simulado)</string>
+
+    <!-- Cart -->
+    <string name="cart_title">Tu Carrito</string>
+    <string name="cart_empty_title">Tu carrito está vacío</string>
+    <string name="cart_empty_subtitle">Explora la variedad de productos frescos directos del campo colombiano.</string>
+    <string name="btn_explore_products">Explorar productos</string>
+    <string name="summary_title">Resumen de compra</string>
+    <string name="cart_subtotal">Subtotal</string>
+    <string name="cart_shipping">Envío</string>
+    <string name="cart_shipping_price">$7.000</string>
+    <string name="cart_total">Total</string>
+    <string name="btn_proceed_to_pay">Ir a pagar</string>
+    <string name="unit_price_format">%s c/u</string>
+
+    <!-- Checkout / Pasarela de Pagos -->
+    <string name="checkout_title">Pasarela de Pagos</string>
+    <string name="delivery_address_section">Dirección de entrega</string>
+    <string name="delivery_address_hint">Ingresa tu dirección de envío</string>
+    <string name="btn_use_location">Usar mi ubicación</string>
+    <string name="simulated_address">Calle 10 # 43E-20, El Poblado, Medellín</string>
+    <string name="payment_method_section">Métodos de pago</string>
+    <string name="payment_card">Tarjeta crédito / débito</string>
+    <string name="payment_pse">PSE (Débito bancario)</string>
+    <string name="payment_nequi">Nequi / Daviplata</string>
+    <string name="btn_pay">Pagar</string>
+    <string name="error_select_payment">Por favor selecciona un método de pago</string>
+    <string name="checkout_dialog_title">¡Pago Exitoso!</string>
+    <string name="checkout_dialog_msg">¡Gracias por tu compra! Tu pedido se ha registrado correctamente.\n\nDirección de entrega:\n%1$s\n\nMétodo de pago:\n%2$s\n\nTotal pagado: %3$s</string>
+    <string name="btn_accept">Aceptar</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Perfil de Comprador</string>
+    <string name="profile_sample_name">Juan Pérez</string>
+    <string name="profile_sample_email">juan.perez@email.com</string>
+    <string name="profile_sample_phone">+57 300 123 4567</string>
+    <string name="profile_sample_address">Calle 10 # 43E-20, El Poblado, Medellín</string>
+    <string name="profile_address_label">Dirección principal</string>
+    <string name="biometric_switch_label">Ingreso con huella</string>
+    <string name="btn_edit_profile">Editar perfil</string>
+    <string name="btn_delete_account">Eliminar cuenta</string>
+    <string name="delete_account_dialog_title">¿Eliminar cuenta?</string>
+    <string name="delete_account_dialog_msg">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.</string>
+    <string name="btn_confirm_delete">Eliminar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="edit_profile_simulated">Función de editar perfil (Simulado)</string>
+    <string name="biometrics_enabled">Ingreso con huella activado</string>
+    <string name="biometrics_disabled">Ingreso con huella desactivado</string>
+
+    <!-- Content Descriptions for Accessibility -->
+    <string name="cd_product_image">Imagen del producto</string>
+    <string name="cd_add_to_cart">Agregar producto al carrito</string>
+    <string name="cd_increase_quantity">Aumentar cantidad</string>
+    <string name="cd_decrease_quantity">Disminuir cantidad</string>
+    <string name="cd_remove_item">Eliminar ítem del carrito</string>
+    <string name="cd_back_button">Volver a la pantalla anterior</string>
+    <string name="cd_location_icon">Ícono de ubicación</string>
+    <string name="cd_user_avatar">Foto de perfil del usuario</string>
 </resources>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_medium">
+
+    <TextView
+        android:id="@+id/tvCatalogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/catalog_title"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_header"
+        android:textStyle="bold" />
+
+    <!-- Search Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSearchCatalog"
+        style="@style/Widget.CosechaLocal.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_medium"
+        app:startIconDrawable="@drawable/ic_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSearchCatalog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Category Chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAll"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/category_all" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCafe"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_cafe" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFrutas"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_frutas" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipLacteos"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_lacteos" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMiel"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_miel" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPanela"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_panela" />
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Empty State Text -->
+    <TextView
+        android:id="@+id/tvEmptySearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:gravity="center"
+        android:text="@string/no_products_found"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_subtitle"
+        android:visibility="gone" />
+
+    <!-- RecyclerView Products List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCatalogProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_weight="1"
+        tools:itemCount="6"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_product" />
+
+</LinearLayout>

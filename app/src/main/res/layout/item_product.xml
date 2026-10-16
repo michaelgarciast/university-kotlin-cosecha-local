@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.CosechaLocal.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_small"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_small">
+
+        <ImageView
+            android:id="@+id/ivProductImage"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/product_grid_image_height"
+            android:background="@drawable/bg_product_image"
+            android:contentDescription="@string/cd_product_image"
+            android:padding="@dimen/spacing_medium"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_product_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_body"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivProductImage"
+            tools:text="Café de origen 500 g" />
+
+        <TextView
+            android:id="@+id/tvProducerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_caption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvProductName"
+            tools:text="Finca El Cafetal" />
+
+        <ImageView
+            android:id="@+id/ivDistanceIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="4dp"
+            android:contentDescription="@string/cd_location_icon"
+            android:src="@drawable/ic_location"
+            app:layout_constraintBottom_toBottomOf="@id/tvDistance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvDistance"
+            app:tint="@color/primary_green" />
+
+        <TextView
+            android:id="@+id/tvDistance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_caption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivDistanceIcon"
+            app:layout_constraintTop_toBottomOf="@id/tvProducerName"
+            tools:text="3.2 km" />
+
+        <TextView
+            android:id="@+id/tvProductPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:textColor="@color/primary_green"
+            android:textSize="@dimen/text_size_subtitle"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnAddToCart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDistance"
+            tools:text="$32.000" />
+
+        <ImageButton
+            android:id="@+id/btnAddToCart"
+            android:layout_width="@dimen/icon_button_min_size"
+            android:layout_height="@dimen/icon_button_min_size"
+            android:background="@drawable/bg_button_primary"
+            android:contentDescription="@string/cd_add_to_cart"
+            android:padding="12dp"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDistance"
+            app:tint="@color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

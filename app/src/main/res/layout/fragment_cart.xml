@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light"
+    android:padding="@dimen/spacing_medium">
+
+    <TextView
+        android:id="@+id/tvCartTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/cart_title"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_header"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Empty State View -->
+    <LinearLayout
+        android:id="@+id/layoutEmptyCart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_large"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCartTitle"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_empty_cart"
+            app:tint="@color/primary_green" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:text="@string/cart_empty_title"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:gravity="center"
+            android:text="@string/cart_empty_subtitle"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_subtitle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnExploreProducts"
+            style="@style/Widget.CosechaLocal.Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/btn_explore_products" />
+    </LinearLayout>
+
+    <!-- Cart Items RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCartItems"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        app:layout_constraintBottom_toTopOf="@id/layoutSummary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCartTitle"
+        tools:listitem="@layout/item_cart" />
+
+    <!-- Bottom Summary Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/layoutSummary"
+        style="@style/Widget.CosechaLocal.Card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_medium">
+
+            <!-- Subtotal Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cart_subtotal"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:id="@+id/tvSubtotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_body"
+                    android:textStyle="bold"
+                    tools:text="$32.000" />
+            </LinearLayout>
+
+            <!-- Shipping Fee Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cart_shipping"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_body" />
+
+                <TextView
+                    android:id="@+id/tvShipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cart_shipping_price"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_body"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:background="@color/divider_color" />
+
+            <!-- Total Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cart_total"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_subtitle"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_green"
+                    android:textSize="@dimen/text_size_title"
+                    android:textStyle="bold"
+                    tools:text="$39.000" />
+            </LinearLayout>
+
+            <!-- Checkout Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCheckout"
+                style="@style/Widget.CosechaLocal.Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:text="@string/btn_proceed_to_pay" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
