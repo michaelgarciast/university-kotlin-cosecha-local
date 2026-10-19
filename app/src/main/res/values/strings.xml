@@ -160,4 +160,73 @@
     <string name="cd_back_button">Volver a la pantalla anterior</string>
     <string name="cd_location_icon">Ícono de ubicación</string>
     <string name="cd_user_avatar">Foto de perfil del usuario</string>
+
+    <!-- Seller -->
+    <string-array name="product_categories">
+        <item>Café</item>
+        <item>Frutas</item>
+        <item>Lácteos</item>
+        <item>Miel</item>
+        <item>Panela</item>
+    </string-array>
+    <string name="btn_save">Guardar</string>
+    <string name="btn_edit">Editar</string>
+    <string name="btn_delete">Eliminar</string>
+    <string name="seller_dashboard_title">Panel de la finca</string>
+    <string name="seller_dashboard_subtitle">Resumen de tu actividad</string>
+    <string name="stat_monthly_sales">Ventas del mes</string>
+    <string name="stat_pending_orders">Pedidos pendientes</string>
+    <string name="stat_active_products">Productos activos</string>
+    <string name="btn_add_product">Agregar producto</string>
+    <string name="seller_products_title">Mis productos</string>
+    <string name="seller_search_hint">Buscar en mis productos…</string>
+    <string name="seller_no_products">Aún no tienes productos. Toca + para crear el primero.</string>
+    <string name="stock_format">Stock: %1$d</string>
+    <string name="stock_low_format">Stock bajo: %1$d</string>
+    <string name="delete_product_title">¿Eliminar producto?</string>
+    <string name="delete_product_message">Se eliminará \"%1$s\" de tu catálogo. Esta acción no se puede deshacer.</string>
+    <string name="product_deleted">Producto eliminado</string>
+    <string name="form_title_new">Nuevo producto</string>
+    <string name="form_title_edit">Editar producto</string>
+    <string name="form_name">Nombre</string>
+    <string name="form_price">Precio (COP)</string>
+    <string name="form_stock">Stock</string>
+    <string name="form_category">Categoría</string>
+    <string name="form_description">Descripción</string>
+    <string name="btn_take_photo">Tomar foto</string>
+    <string name="photo_simulated">Cámara no disponible (simulado)</string>
+    <string name="location_simulated">Ubicación de la finca registrada (simulado)</string>
+    <string name="error_name_required">El nombre es obligatorio</string>
+    <string name="error_price_invalid">El precio debe ser mayor a 0</string>
+    <string name="error_stock_invalid">El stock debe ser 0 o más</string>
+    <string name="error_category_required">Selecciona una categoría</string>
+    <string name="seller_orders_title">Pedidos recibidos</string>
+    <string name="filter_all">Todos</string>
+    <string name="status_pending">Pendiente</string>
+    <string name="status_preparing">Preparando</string>
+    <string name="status_shipped">Enviado</string>
+    <string name="status_delivered">Entregado</string>
+    <string name="no_orders_found">No hay pedidos con este estado</string>
+    <string name="order_number_format">Pedido #%1$d</string>
+    <string name="order_detail_buyer">Comprador</string>
+    <string name="order_detail_items">Productos</string>
+    <string name="order_detail_total">Total</string>
+    <string name="order_detail_date">Fecha</string>
+    <string name="order_detail_status">Cambiar estado</string>
+    <string name="store_title">Mi tienda</string>
+    <string name="store_name">Finca El Cafetal</string>
+    <string name="store_description">Familia caficultora con tres generaciones de tradición. Cultivamos café de origen, miel, panela y frutas sin agroquímicos.</string>
+    <string name="store_location_label">Ubicación</string>
+    <string name="store_location_value">Vereda La Esperanza, Jardín, Antioquia</string>
+    <string name="store_phone_label">Teléfono</string>
+    <string name="store_phone_value">+57 311 456 7890</string>
+    <string name="store_hours_label">Horario de atención</string>
+    <string name="store_hours_value">Lunes a sábado, 7:00 a.m. - 5:00 p.m.</string>
+    <string name="cd_edit_product">Editar %1$s</string>
+    <string name="cd_delete_product">Eliminar %1$s</string>
+    <string name="cd_order_item">Ver detalle del pedido %1$d</string>
+    <string name="cd_add_new_product">Crear nuevo producto</string>
+    <string name="cd_store_logo">Logo de la finca</string>
+    <string name="cd_search_my_products">Buscar en mis productos</string>
+    <string name="cd_stat_icon">Ícono de resumen</string>
 </resources>

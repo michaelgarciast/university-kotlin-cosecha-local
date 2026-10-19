@@ -75,4 +75,33 @@
         <item name="iconTint">@color/error_red</item>
     </style>
 
+
+    <!-- Seller: compact text button for card actions (48dp touch target) -->
+    <style name="Widget.CosechaLocal.Button.CardAction" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/primary_green</item>
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="iconTint">@color/primary_green</item>
+    </style>
+
+    <style name="Widget.CosechaLocal.Button.CardActionDanger" parent="Widget.CosechaLocal.Button.CardAction">
+        <item name="android:textColor">@color/error_red</item>
+        <item name="iconTint">@color/error_red</item>
+    </style>
+
+    <!-- Seller: read-only status/stock chip -->
+    <style name="Widget.CosechaLocal.Chip.Status" parent="Widget.Material3.Chip.Assist">
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="android:textSize">@dimen/text_size_caption</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Seller: amber floating action button -->
+    <style name="Widget.CosechaLocal.Fab" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">@color/amber_accent</item>
+        <item name="tint">@color/dark_green</item>
+    </style>
 </resources>

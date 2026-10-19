@@ -18,4 +18,15 @@
     <color name="chip_selected_bg">#E8F5E9</color>
     <color name="image_placeholder_bg">#EAF2EB</color>
     <color name="light_gray">#F0F0F0</color>
+
+    <!-- Seller: order status & stock alert -->
+    <color name="status_pending_bg">#FFF3CD</color>
+    <color name="status_pending_text">#8A5A00</color>
+    <color name="status_preparing_bg">#E3F2FD</color>
+    <color name="status_preparing_text">#1565C0</color>
+    <color name="status_shipped_bg">#EDE7F6</color>
+    <color name="status_shipped_text">#4527A0</color>
+    <color name="status_delivered_bg">#E8F5E9</color>
+    <color name="status_delivered_text">#2E7D32</color>
+    <color name="stock_low_bg">#FDECEA</color>
 </resources>
