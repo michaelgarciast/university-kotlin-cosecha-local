@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_large"
+    android:paddingTop="@dimen/spacing_small">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order_detail_buyer"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_caption" />
+
+    <TextView
+        android:id="@+id/tvDetailBuyer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_subtitle"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/order_detail_items"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_caption" />
+
+    <TextView
+        android:id="@+id/tvDetailItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_body" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/order_detail_total"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_caption" />
+
+    <TextView
+        android:id="@+id/tvDetailTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_green"
+        android:textSize="@dimen/text_size_subtitle"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:text="@string/order_detail_date"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_caption" />
+
+    <TextView
+        android:id="@+id/tvDetailDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_body" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:text="@string/order_detail_status"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_caption" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupStatus"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStatusPendiente"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_pending" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStatusPreparando"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_preparing" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStatusEnviado"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_shipped" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStatusEntregado"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_delivered" />
+    </com.google.android.material.chip.ChipGroup>
+</LinearLayout>
