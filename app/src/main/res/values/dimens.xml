@@ -41,4 +41,11 @@
     <dimen name="seller_logo_size">96dp</dimen>
     <dimen name="fab_list_bottom_padding">88dp</dimen>
     <dimen name="form_image_height">160dp</dimen>
+
+    <!-- Admin -->
+    <dimen name="chart_height">180dp</dimen>
+    <dimen name="chart_bar_corner">4dp</dimen>
+    <dimen name="status_dot_size">10dp</dimen>
+    <dimen name="rank_badge_size">32dp</dimen>
+    <dimen name="settings_row_min_height">64dp</dimen>
 </resources>

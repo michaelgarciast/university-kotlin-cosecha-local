@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_light"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_medium">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/admin_dashboard_title"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_header"
+        android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:text="@string/admin_dashboard_subtitle"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_subtitle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CosechaLocal.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_medium">
+
+                    <ImageView
+                        android:layout_width="@dimen/seller_stat_icon_size"
+                        android:layout_height="@dimen/seller_stat_icon_size"
+                        android:background="@drawable/bg_stat_icon"
+                        android:importantForAccessibility="no"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_users"
+                        app:tint="@color/primary_green" />
+
+                    <TextView
+                        android:id="@+id/tvUsersValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:textColor="@color/dark_green"
+                        android:textSize="@dimen/text_size_title"
+                        android:textStyle="bold"
+                        tools:text="1.280" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_stat_users"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CosechaLocal.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_medium">
+
+                    <ImageView
+                        android:layout_width="@dimen/seller_stat_icon_size"
+                        android:layout_height="@dimen/seller_stat_icon_size"
+                        android:background="@drawable/bg_stat_icon"
+                        android:importantForAccessibility="no"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_store"
+                        app:tint="@color/primary_green" />
+
+                    <TextView
+                        android:id="@+id/tvSellersValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:textColor="@color/dark_green"
+                        android:textSize="@dimen/text_size_title"
+                        android:textStyle="bold"
+                        tools:text="1.280" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_stat_sellers"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CosechaLocal.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_medium">
+
+                    <ImageView
+                        android:layout_width="@dimen/seller_stat_icon_size"
+                        android:layout_height="@dimen/seller_stat_icon_size"
+                        android:background="@drawable/bg_stat_icon"
+                        android:importantForAccessibility="no"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_product"
+                        app:tint="@color/primary_green" />
+
+                    <TextView
+                        android:id="@+id/tvProductsValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:textColor="@color/dark_green"
+                        android:textSize="@dimen/text_size_title"
+                        android:textStyle="bold"
+                        tools:text="1.280" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_stat_products"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.CosechaLocal.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_tiny"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_medium">
+
+                    <ImageView
+                        android:layout_width="@dimen/seller_stat_icon_size"
+                        android:layout_height="@dimen/seller_stat_icon_size"
+                        android:background="@drawable/bg_stat_icon"
+                        android:importantForAccessibility="no"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_payments"
+                        app:tint="@color/primary_green" />
+
+                    <TextView
+                        android:id="@+id/tvSalesTodayValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:textColor="@color/dark_green"
+                        android:textSize="@dimen/text_size_title"
+                        android:textStyle="bold"
+                        tools:text="1.280" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_stat_sales_today"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.CosechaLocal.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:layout_marginTop="@dimen/spacing_medium">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/admin_orders_chart_title"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_subtitle"
+                    android:textStyle="bold" />
+
+                <com.garcia.cosechalocal.ui.admin.BarChartView
+                    android:id="@+id/chartOrders"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/chart_height"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:contentDescription="@string/cd_orders_chart" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPendingApproval"
+            style="@style/Widget.CosechaLocal.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:clickable="true"
+            android:contentDescription="@string/cd_pending_card"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/icon_button_min_size"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_medium">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_pending_title"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_size_subtitle"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_pending_subtitle"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="@dimen/text_size_body" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvPendingCount"
+                    android:layout_width="@dimen/seller_stat_icon_size"
+                    android:layout_height="@dimen/seller_stat_icon_size"
+                    android:background="@drawable/bg_counter_badge"
+                    android:gravity="center"
+                    android:textColor="@color/dark_green"
+                    android:textSize="@dimen/text_size_title"
+                    android:textStyle="bold"
+                    tools:text="3" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

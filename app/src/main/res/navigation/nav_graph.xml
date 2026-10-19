@@ -157,32 +157,43 @@
     <!-- Admin Role Destinations -->
     <fragment
         android:id="@+id/navigation_admin_dashboard"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.admin.AdminDashboardFragment"
         android:label="@string/menu_admin_dashboard"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_admin_dashboard" />
 
     <fragment
         android:id="@+id/navigation_admin_users"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.admin.AdminUsersFragment"
         android:label="@string/menu_admin_users"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_admin_users" />
 
     <fragment
         android:id="@+id/navigation_admin_products"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.admin.AdminProductsFragment"
         android:label="@string/menu_admin_products"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_admin_products" />
 
     <fragment
         android:id="@+id/navigation_admin_payments"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.admin.SalesReportFragment"
         android:label="@string/menu_admin_payments"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_sales_report" />
 
     <fragment
         android:id="@+id/navigation_admin_settings"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.admin.AdminSettingsFragment"
         android:label="@string/menu_admin_settings"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_admin_settings" />
+
+    <fragment
+        android:id="@+id/userFormFragment"
+        android:name="com.garcia.cosechalocal.ui.admin.UserFormFragment"
+        android:label="@string/user_form_title_new"
+        tools:layout="@layout/fragment_user_form">
+        <argument
+            android:name="userId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

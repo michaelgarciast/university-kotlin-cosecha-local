@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.CosechaLocal.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/spacing_small">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_medium">
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_subtitle"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btnEditUser"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Laura Martínez" />
+
+        <TextView
+            android:id="@+id/tvUserEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_body"
+            app:layout_constraintEnd_toStartOf="@id/btnEditUser"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUserName"
+            tools:text="laura.martinez@correo.com" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipRole"
+            style="@style/Widget.CosechaLocal.Chip.Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUserEmail"
+            tools:text="Comprador" />
+
+        <LinearLayout
+            android:id="@+id/layoutStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/icon_button_min_size"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/spacing_small"
+            app:layout_constraintBottom_toBottomOf="@id/chipRole"
+            app:layout_constraintStart_toEndOf="@id/chipRole"
+            app:layout_constraintTop_toTopOf="@id/chipRole">
+
+            <View
+                android:id="@+id/viewStatusDot"
+                android:layout_width="@dimen/status_dot_size"
+                android:layout_height="@dimen/status_dot_size"
+                android:background="@drawable/bg_status_dot" />
+
+            <TextView
+                android:id="@+id/tvAccountStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:textSize="@dimen/text_size_caption"
+                android:textStyle="bold"
+                tools:text="Activa" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnEditUser"
+            android:layout_width="@dimen/icon_button_min_size"
+            android:layout_height="@dimen/icon_button_min_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/btn_edit"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/primary_green" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
