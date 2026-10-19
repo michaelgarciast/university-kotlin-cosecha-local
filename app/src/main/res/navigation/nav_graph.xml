@@ -120,27 +120,39 @@
     <!-- Seller Role Destinations -->
     <fragment
         android:id="@+id/navigation_seller_dashboard"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.seller.SellerDashboardFragment"
         android:label="@string/menu_seller_dashboard"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_seller_dashboard" />
 
     <fragment
         android:id="@+id/navigation_seller_products"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.seller.SellerProductsFragment"
         android:label="@string/menu_seller_products"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_seller_products" />
 
     <fragment
         android:id="@+id/navigation_seller_orders"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.seller.SellerOrdersFragment"
         android:label="@string/menu_seller_orders"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_seller_orders" />
 
     <fragment
         android:id="@+id/navigation_seller_store"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.seller.SellerProfileFragment"
         android:label="@string/menu_seller_store"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_seller_profile" />
+
+    <fragment
+        android:id="@+id/productFormFragment"
+        android:name="com.garcia.cosechalocal.ui.seller.ProductFormFragment"
+        android:label="@string/form_title_new"
+        tools:layout="@layout/fragment_product_form">
+        <argument
+            android:name="productId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <!-- Admin Role Destinations -->
     <fragment
