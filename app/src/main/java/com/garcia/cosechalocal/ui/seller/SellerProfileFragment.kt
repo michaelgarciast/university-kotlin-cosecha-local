@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
-import com.garcia.cosechalocal.R
+import com.garcia.cosechalocal.data.repository.AuthRepository
 import com.garcia.cosechalocal.databinding.FragmentSellerProfileBinding
-import com.google.android.material.snackbar.Snackbar
+import com.garcia.cosechalocal.ui.common.logoutToLogin
 
 class SellerProfileFragment : Fragment() {
 
@@ -23,16 +21,19 @@ class SellerProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnEditProfile.setOnClickListener {
-            Snackbar.make(binding.root, R.string.edit_profile_simulated, Snackbar.LENGTH_SHORT).show()
-        }
-        binding.btnLogout.setOnClickListener {
-            findNavController().navigate(
-                R.id.loginFragment,
-                null,
-                NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
-            )
-        }
+
+        AuthRepository.loadCurrentProfile(
+            onSuccess = { profile ->
+                if (!isAdded) return@loadCurrentProfile
+                binding.tvStoreName.text = profile.name
+                binding.tvStoreEmail.text = profile.email
+            },
+            onError = {
+                // loadCurrentProfile ya cerró la sesión si el perfil no existe
+            }
+        )
+
+        binding.btnLogout.setOnClickListener { logoutToLogin() }
     }
 
     override fun onDestroyView() {

@@ -42,7 +42,7 @@ class ProductDetailFragment : Fragment() {
         }
 
         if (product == null) {
-            Toast.makeText(requireContext(), "Producto no encontrado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error_product_not_found), Toast.LENGTH_SHORT).show()
             findNavController().navigateUp()
             return
         }
@@ -80,15 +80,6 @@ class ProductDetailFragment : Fragment() {
                 currentQuantity++
                 binding.tvQuantity.text = currentQuantity.toString()
             }
-        }
-
-        binding.btnViewMap.setOnClickListener {
-            val producer = product?.producer.orEmpty()
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.producer_map_simulated, producer),
-                Toast.LENGTH_SHORT
-            ).show()
         }
 
         binding.btnAddToCart.setOnClickListener {

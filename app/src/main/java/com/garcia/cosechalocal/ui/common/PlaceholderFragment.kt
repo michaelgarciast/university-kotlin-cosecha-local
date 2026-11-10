@@ -29,9 +29,7 @@ class PlaceholderFragment : Fragment() {
         val title = findNavController().currentDestination?.label ?: getString(R.string.placeholder_title)
         binding.tvPlaceholderTitle.text = title
 
-        binding.btnLogout.setOnClickListener {
-            findNavController().navigate(R.id.loginFragment)
-        }
+        binding.btnLogout.setOnClickListener { logoutToLogin() }
     }
 
     override fun onDestroyView() {

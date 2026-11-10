@@ -130,15 +130,6 @@
                     android:textColor="@color/text_secondary"
                     android:textSize="@dimen/text_size_body"
                     tools:text="A 3.2 km de tu ubicación" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnViewMap"
-                    style="@style/Widget.CosechaLocal.Button.Secondary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_small"
-                    android:text="@string/btn_view_map"
-                    app:icon="@drawable/ic_location" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

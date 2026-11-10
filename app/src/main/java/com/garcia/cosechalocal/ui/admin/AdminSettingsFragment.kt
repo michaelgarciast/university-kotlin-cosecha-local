@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
-import com.garcia.cosechalocal.R
+import com.garcia.cosechalocal.data.repository.AuthRepository
 import com.garcia.cosechalocal.databinding.FragmentAdminSettingsBinding
-import com.google.android.material.snackbar.Snackbar
+import com.garcia.cosechalocal.ui.common.logoutToLogin
 
 class AdminSettingsFragment : Fragment() {
 
@@ -23,22 +21,19 @@ class AdminSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mapOf(
-            binding.rowCategories to R.string.settings_categories,
-            binding.rowSecurity to R.string.settings_security,
-            binding.rowNotifications to R.string.settings_notifications
-        ).forEach { (row, title) ->
-            row.setOnClickListener {
-                Snackbar.make(binding.root, getString(R.string.settings_option_simulated, getString(title)), Snackbar.LENGTH_SHORT).show()
+
+        AuthRepository.loadCurrentProfile(
+            onSuccess = { profile ->
+                if (!isAdded) return@loadCurrentProfile
+                binding.tvAdminName.text = profile.name
+                binding.tvAdminEmail.text = profile.email
+            },
+            onError = {
+                // loadCurrentProfile ya cerró la sesión si el perfil no existe
             }
-        }
-        binding.btnLogout.setOnClickListener {
-            findNavController().navigate(
-                R.id.loginFragment,
-                null,
-                NavOptions.Builder().setPopUpTo(R.id.nav_graph, true).build()
-            )
-        }
+        )
+
+        binding.btnLogout.setOnClickListener { logoutToLogin() }
     }
 
     override fun onDestroyView() {
