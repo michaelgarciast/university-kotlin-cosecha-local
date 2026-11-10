@@ -13,7 +13,6 @@
     <string name="confirm_password_hint">Confirmar contraseña</string>
     <string name="full_name_hint">Nombre completo</string>
     <string name="back_to_login">Volver al inicio de sesión</string>
-    <string name="role_select_title">Selecciona el rol de prueba:</string>
     <string name="role_buyer">Comprador</string>
     <string name="role_seller">Vendedor</string>
     <string name="role_admin">Administrador</string>
@@ -21,6 +20,7 @@
     <!-- Auth - Login -->
     <string name="login_title">¡Bienvenido!</string>
     <string name="login_subtitle">Ingresa a tu cuenta de Cosecha Local</string>
+    <string name="login_as_title">Ingresar como:</string>
     <string name="btn_login">Iniciar sesión</string>
     <string name="btn_login_fingerprint">Ingresar con huella</string>
     <string name="forgot_password_link">¿Olvidaste tu contraseña?</string>
@@ -48,13 +48,21 @@
     <string name="error_empty_name">Por favor ingresa tu nombre completo</string>
     <string name="error_accept_terms">Debes aceptar los términos y políticas para continuar</string>
     <string name="register_success">Registro exitoso. ¡Inicia sesión con tu nueva cuenta!</string>
+    <string name="error_login_failed">Correo o contraseña incorrectos</string>
+    <string name="error_register_failed">No se pudo completar el registro</string>
+    <string name="error_reset_password">No se pudo enviar el correo de recuperación</string>
+    <string name="error_profile_load">No se pudo cargar el perfil de la cuenta</string>
+    <string name="error_profile_missing">Esta cuenta no tiene un perfil registrado</string>
+    <string name="error_account_disabled">Esta cuenta está desactivada</string>
+    <string name="error_role_invalid">El rol de esta cuenta no es válido</string>
+    <string name="error_role_mismatch">Esta cuenta está registrada como %1$s</string>
 
     <!-- Biometrics -->
     <string name="biometric_prompt_title">Autenticación biométrica</string>
     <string name="biometric_prompt_subtitle">Accede a Cosecha Local con tu huella dactilar</string>
     <string name="biometric_prompt_cancel">Cancelar</string>
     <string name="biometric_error">Error en la autenticación biométrica</string>
-    <string name="biometric_simulated">Autenticación biométrica exitosa (Simulada)</string>
+    <string name="biometric_requires_login">Primero inicia sesión con tu contraseña</string>
 
     <!-- Menu Items - Buyer -->
     <string name="menu_buyer_home">Inicio</string>
@@ -98,11 +106,10 @@
     <string name="product_detail_title">Detalle del Producto</string>
     <string name="product_stock">Stock: %d disp.</string>
     <string name="producer_card_title">Productor local</string>
-    <string name="btn_view_map">Ver mapa</string>
     <string name="quantity_label">Cantidad:</string>
     <string name="btn_add_to_cart">Agregar al carrito</string>
     <string name="added_to_cart_toast">%1$s (%2$d) agregado al carrito</string>
-    <string name="producer_map_simulated">Ubicación de %s desplegada en el mapa (Simulado)</string>
+    <string name="error_product_not_found">Producto no encontrado</string>
 
     <!-- Cart -->
     <string name="cart_title">Tu Carrito</string>
@@ -135,21 +142,8 @@
 
     <!-- Profile -->
     <string name="profile_title">Perfil de Comprador</string>
-    <string name="profile_sample_name">Juan Pérez</string>
-    <string name="profile_sample_email">juan.perez@email.com</string>
-    <string name="profile_sample_phone">+57 300 123 4567</string>
-    <string name="profile_sample_address">Calle 10 # 43E-20, El Poblado, Medellín</string>
-    <string name="profile_address_label">Dirección principal</string>
-    <string name="biometric_switch_label">Ingreso con huella</string>
-    <string name="btn_edit_profile">Editar perfil</string>
-    <string name="btn_delete_account">Eliminar cuenta</string>
-    <string name="delete_account_dialog_title">¿Eliminar cuenta?</string>
-    <string name="delete_account_dialog_msg">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.</string>
     <string name="btn_confirm_delete">Eliminar</string>
     <string name="btn_cancel">Cancelar</string>
-    <string name="edit_profile_simulated">Función de editar perfil (Simulado)</string>
-    <string name="biometrics_enabled">Ingreso con huella activado</string>
-    <string name="biometrics_disabled">Ingreso con huella desactivado</string>
 
     <!-- Content Descriptions for Accessibility -->
     <string name="cd_product_image">Imagen del producto</string>
@@ -214,19 +208,10 @@
     <string name="order_detail_date">Fecha</string>
     <string name="order_detail_status">Cambiar estado</string>
     <string name="store_title">Mi tienda</string>
-    <string name="store_name">Finca El Cafetal</string>
-    <string name="store_description">Familia caficultora con tres generaciones de tradición. Cultivamos café de origen, miel, panela y frutas sin agroquímicos.</string>
-    <string name="store_location_label">Ubicación</string>
-    <string name="store_location_value">Vereda La Esperanza, Jardín, Antioquia</string>
-    <string name="store_phone_label">Teléfono</string>
-    <string name="store_phone_value">+57 311 456 7890</string>
-    <string name="store_hours_label">Horario de atención</string>
-    <string name="store_hours_value">Lunes a sábado, 7:00 a.m. - 5:00 p.m.</string>
     <string name="cd_edit_product">Editar %1$s</string>
     <string name="cd_delete_product">Eliminar %1$s</string>
     <string name="cd_order_item">Ver detalle del pedido %1$d</string>
     <string name="cd_add_new_product">Crear nuevo producto</string>
-    <string name="cd_store_logo">Logo de la finca</string>
     <string name="cd_search_my_products">Buscar en mis productos</string>
     <string name="cd_stat_icon">Ícono de resumen</string>
 
@@ -265,8 +250,17 @@
     <string name="error_email_invalid">Ingresa un correo con formato válido</string>
     <string name="error_email_duplicate">Este correo ya está registrado</string>
     <string name="error_role_required">Selecciona un rol</string>
+    <string name="user_form_email_locked">El correo no se puede modificar</string>
+    <string name="user_created_reset_sent">Usuario creado. Se envió un correo para que defina su contraseña.</string>
+    <string name="user_updated">Usuario actualizado</string>
+    <string name="user_deleted">Usuario eliminado</string>
+    <string name="error_users_load">No se pudieron cargar los usuarios</string>
+    <string name="error_user_save">No se pudo guardar el usuario</string>
+    <string name="error_user_delete">No se pudo eliminar el usuario</string>
+    <string name="error_user_status">No se pudo cambiar el estado de la cuenta</string>
+    <string name="error_self_account">No puedes desactivar ni eliminar tu propia cuenta de administrador</string>
     <string name="delete_user_title">¿Eliminar usuario?</string>
-    <string name="delete_user_message">Se eliminará a %1$s de la plataforma. Esta acción no se puede deshacer.</string>
+    <string name="delete_user_message">Se eliminará el perfil de %1$s y su cuenta quedará sin acceso. Esta acción no se puede deshacer.</string>
     <string name="admin_products_title">Gestión de productos</string>
     <string name="filter_pending_approval">Por aprobar</string>
     <string name="filter_approved">Aprobados</string>
@@ -295,12 +289,5 @@
     <string name="btn_export_report">Exportar reporte</string>
     <string name="report_exported_simulated">Reporte exportado (simulado)</string>
     <string name="admin_settings_title">Ajustes</string>
-    <string name="settings_categories">Categorías</string>
-    <string name="settings_categories_desc">Administra las categorías de productos</string>
-    <string name="settings_security">Seguridad</string>
-    <string name="settings_security_desc">Contraseñas y acceso de usuarios</string>
-    <string name="settings_notifications">Notificaciones</string>
-    <string name="settings_notifications_desc">Alertas de pedidos y moderación</string>
-    <string name="settings_option_simulated">%1$s (simulado)</string>
     <string name="cd_rank">Posición</string>
 </resources>

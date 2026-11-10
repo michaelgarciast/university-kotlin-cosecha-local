@@ -4,13 +4,6 @@ import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.data.model.ModerationStatus
 import com.garcia.cosechalocal.ui.common.UserRole
 
-val UserRole.labelRes: Int
-    get() = when (this) {
-        UserRole.BUYER -> R.string.role_buyer
-        UserRole.SELLER -> R.string.role_seller
-        UserRole.ADMIN -> R.string.role_admin
-    }
-
 val UserRole.bgColorRes: Int
     get() = when (this) {
         UserRole.BUYER -> R.color.chip_selected_bg

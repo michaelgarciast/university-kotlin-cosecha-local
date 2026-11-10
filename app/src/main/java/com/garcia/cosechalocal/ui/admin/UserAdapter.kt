@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.garcia.cosechalocal.R
-import com.garcia.cosechalocal.data.model.User
+import com.garcia.cosechalocal.data.model.UserProfile
 import com.garcia.cosechalocal.databinding.ItemUserBinding
 
 class UserAdapter(
-    private val onEdit: (User) -> Unit,
-    private val onToggleBlock: (User) -> Unit
-) : ListAdapter<User, UserAdapter.ViewHolder>(Diff()) {
+    private val onEdit: (UserProfile) -> Unit,
+    private val onToggleBlock: (UserProfile) -> Unit
+) : ListAdapter<UserProfile, UserAdapter.ViewHolder>(Diff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,7 +23,7 @@ class UserAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
 
     inner class ViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User) {
+        fun bind(user: UserProfile) {
             val ctx = binding.root.context
             binding.tvUserName.text = user.name
             binding.tvUserEmail.text = user.email
@@ -44,8 +44,8 @@ class UserAdapter(
         }
     }
 
-    class Diff : DiffUtil.ItemCallback<User>() {
-        override fun areItemsTheSame(a: User, b: User) = a.id == b.id
-        override fun areContentsTheSame(a: User, b: User) = a == b
+    class Diff : DiffUtil.ItemCallback<UserProfile>() {
+        override fun areItemsTheSame(a: UserProfile, b: UserProfile) = a.uid == b.uid
+        override fun areContentsTheSame(a: UserProfile, b: UserProfile) = a == b
     }
 }

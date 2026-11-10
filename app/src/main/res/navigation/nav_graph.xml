@@ -192,8 +192,9 @@
         tools:layout="@layout/fragment_user_form">
         <argument
             android:name="userId"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
 </navigation>

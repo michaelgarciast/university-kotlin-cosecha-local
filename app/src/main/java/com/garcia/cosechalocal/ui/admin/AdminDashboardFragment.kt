@@ -11,6 +11,7 @@ import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.data.model.ModerationStatus
 import com.garcia.cosechalocal.data.repository.AdminRepository
 import com.garcia.cosechalocal.databinding.FragmentAdminDashboardBinding
+import com.garcia.cosechalocal.ui.common.UserRole
 import com.garcia.cosechalocal.utils.FormatUtils
 import java.text.NumberFormat
 import java.util.Locale
@@ -29,8 +30,10 @@ class AdminDashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val nf = NumberFormat.getIntegerInstance(Locale.forLanguageTag("es-CO"))
-        binding.tvUsersValue.text = nf.format(AdminRepository.TOTAL_USERS)
-        binding.tvSellersValue.text = nf.format(AdminRepository.TOTAL_SELLERS)
+        viewModel.users.observe(viewLifecycleOwner) { users ->
+            binding.tvUsersValue.text = nf.format(users.size)
+            binding.tvSellersValue.text = nf.format(users.count { it.role == UserRole.SELLER })
+        }
         binding.tvProductsValue.text = nf.format(AdminRepository.TOTAL_PRODUCTS)
         binding.tvSalesTodayValue.text = FormatUtils.formatMillions(AdminRepository.SALES_TODAY)
 

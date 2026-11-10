@@ -7,31 +7,15 @@ import com.garcia.cosechalocal.data.model.ProductModeration
 import com.garcia.cosechalocal.data.model.SalesPeriod
 import com.garcia.cosechalocal.data.model.SalesReport
 import com.garcia.cosechalocal.data.model.SellerSales
-import com.garcia.cosechalocal.data.model.User
-import com.garcia.cosechalocal.ui.common.UserRole
 
 object AdminRepository {
 
-    const val TOTAL_USERS = 1280
-    const val TOTAL_SELLERS = 96
     const val TOTAL_PRODUCTS = 842
     const val SALES_TODAY = 5_100_000
 
     fun getOrdersLast7Days(): List<BarEntry> = listOf(
         BarEntry("Lun", 42), BarEntry("Mar", 55), BarEntry("Mié", 38), BarEntry("Jue", 61),
         BarEntry("Vie", 74), BarEntry("Sáb", 88), BarEntry("Dom", 47)
-    )
-
-    fun getUsers(): List<User> = listOf(
-        User(1, "Administrador Cosecha", "admin@cosechalocal.co", UserRole.ADMIN, true),
-        User(2, "Laura Martínez", "laura.martinez@correo.com", UserRole.BUYER, true),
-        User(3, "Carlos Rodríguez", "carlos.rodriguez@correo.com", UserRole.BUYER, true),
-        User(4, "Andrea Gómez", "andrea.gomez@correo.com", UserRole.BUYER, false),
-        User(5, "Julián Torres", "julian.torres@correo.com", UserRole.BUYER, true),
-        User(6, "Finca El Cafetal", "contacto@elcafetal.co", UserRole.SELLER, true),
-        User(7, "Trapiche San José", "ventas@trapichesanjose.co", UserRole.SELLER, true),
-        User(8, "Apiario La Colmena", "hola@lacolmena.co", UserRole.SELLER, false),
-        User(9, "Lácteos del Valle", "pedidos@lacteosdelvalle.co", UserRole.SELLER, true)
     )
 
     private fun moderation(id: String, name: String, seller: String, price: Int, category: String, status: ModerationStatus) =

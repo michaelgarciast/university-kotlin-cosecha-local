@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.garcia.cosechalocal.R
+import com.garcia.cosechalocal.data.repository.AuthRepository
 import com.garcia.cosechalocal.databinding.FragmentRecoverPasswordBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -30,17 +31,46 @@ class RecoverPasswordFragment : Fragment() {
 
         binding.btnSendLink.setOnClickListener {
             if (validateEmail()) {
-                Snackbar.make(
-                    requireView(),
-                    getString(R.string.recover_link_sent),
-                    Snackbar.LENGTH_LONG
-                ).show()
+                sendRecoveryEmail()
             }
         }
 
         binding.tvBackToLoginRecover.setOnClickListener {
             findNavController().navigate(R.id.action_recoverPasswordFragment_to_loginFragment)
         }
+    }
+
+    private fun sendRecoveryEmail() {
+        val email = binding.etRecoverEmail.text?.toString()?.trim().orEmpty()
+
+        setLoading(true)
+        AuthRepository.sendPasswordReset(
+            email = email,
+            onSuccess = {
+                if (!isAdded) return@sendPasswordReset
+                setLoading(false)
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.recover_link_sent),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            },
+            onError = {
+                if (!isAdded) return@sendPasswordReset
+                setLoading(false)
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.error_reset_password),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        )
+    }
+
+    private fun setLoading(loading: Boolean) {
+        val currentBinding = _binding ?: return
+        currentBinding.btnSendLink.isEnabled = !loading
+        currentBinding.btnSendLink.alpha = if (loading) 0.6f else 1f
     }
 
     private fun validateEmail(): Boolean {

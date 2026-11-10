@@ -9,7 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.garcia.cosechalocal.R
+import com.garcia.cosechalocal.data.repository.AuthRepository
 import com.garcia.cosechalocal.databinding.FragmentRegisterBinding
+import com.garcia.cosechalocal.ui.common.UserRole
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 
 class RegisterFragment : Fragment() {
 
@@ -30,14 +33,53 @@ class RegisterFragment : Fragment() {
 
         binding.btnRegister.setOnClickListener {
             if (validateRegistration()) {
-                Toast.makeText(requireContext(), getString(R.string.register_success), Toast.LENGTH_LONG).show()
-                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                performRegistration()
             }
         }
 
         binding.tvBackToLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
+    }
+
+    private fun performRegistration() {
+        val fullName = binding.etFullName.text?.toString()?.trim().orEmpty()
+        val email = binding.etRegisterEmail.text?.toString()?.trim().orEmpty()
+        val password = binding.etRegisterPassword.text?.toString()?.trim().orEmpty()
+        val role = if (binding.rbSeller.isChecked) UserRole.SELLER else UserRole.BUYER
+
+        setLoading(true)
+        AuthRepository.register(
+            name = fullName,
+            email = email,
+            password = password,
+            role = role,
+            onSuccess = {
+                if (!isAdded) return@register
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.register_success),
+                    Toast.LENGTH_LONG
+                ).show()
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            },
+            onError = { error ->
+                if (!isAdded) return@register
+                setLoading(false)
+                val message = if (error is FirebaseAuthUserCollisionException) {
+                    getString(R.string.error_email_duplicate)
+                } else {
+                    getString(R.string.error_register_failed)
+                }
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            }
+        )
+    }
+
+    private fun setLoading(loading: Boolean) {
+        val currentBinding = _binding ?: return
+        currentBinding.btnRegister.isEnabled = !loading
+        currentBinding.btnRegister.alpha = if (loading) 0.6f else 1f
     }
 
     private fun validateRegistration(): Boolean {

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -28,8 +28,22 @@ class AdminUsersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = UserAdapter(
-            onEdit = { findNavController().navigate(R.id.userFormFragment, bundleOf("userId" to it.id)) },
-            onToggleBlock = { viewModel.toggleBlock(it.id) }
+            onEdit = {
+                val args = Bundle().apply { putString("userId", it.uid) }
+                findNavController().navigate(R.id.userFormFragment, args)
+            },
+            onToggleBlock = { user ->
+                if (viewModel.isSelf(user.uid)) {
+                    showToast(R.string.error_self_account)
+                } else {
+                    viewModel.setUserActive(
+                        uid = user.uid,
+                        active = !user.active,
+                        onSuccess = {},
+                        onError = { showToast(R.string.error_user_status) }
+                    )
+                }
+            }
         )
         binding.rvUsers.layoutManager = LinearLayoutManager(requireContext())
         binding.rvUsers.adapter = adapter
@@ -43,9 +57,20 @@ class AdminUsersFragment : Fragment() {
             }
         )
 
+        viewModel.usersLoading.observe(viewLifecycleOwner) { loading ->
+            binding.progressUsers.visibility = if (loading) View.VISIBLE else View.GONE
+            if (loading) binding.tvEmptyUsers.visibility = View.GONE
+        }
+        viewModel.usersError.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                showToast(R.string.error_users_load)
+                viewModel.clearUsersError()
+            }
+        }
         viewModel.filteredUsers.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            binding.tvEmptyUsers.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            val showEmpty = it.isEmpty() && viewModel.usersLoading.value != true
+            binding.tvEmptyUsers.visibility = if (showEmpty) View.VISIBLE else View.GONE
         }
         binding.etSearchUsers.doAfterTextChanged { viewModel.setQuery(it?.toString().orEmpty()) }
         binding.chipGroupUsers.setOnCheckedStateChangeListener { _, ids ->
@@ -58,6 +83,11 @@ class AdminUsersFragment : Fragment() {
             )
         }
         binding.fabAddUser.setOnClickListener { findNavController().navigate(R.id.userFormFragment) }
+    }
+
+    private fun showToast(messageRes: Int) {
+        if (!isAdded) return
+        Toast.makeText(requireContext(), getString(messageRes), Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

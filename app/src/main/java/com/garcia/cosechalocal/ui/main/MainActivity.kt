@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.garcia.cosechalocal.R
@@ -93,6 +94,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        navController.navigate(startDestId)
+        navController.navigate(
+            startDestId,
+            null,
+            NavOptions.Builder()
+                .setPopUpTo(R.id.loginFragment, true)
+                .build()
+        )
     }
 }

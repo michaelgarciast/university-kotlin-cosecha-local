@@ -8,6 +8,9 @@
         <item name="colorOnPrimaryContainer">@color/white</item>
         <item name="colorSecondary">@color/amber_accent</item>
         <item name="colorOnSecondary">@color/black</item>
+        <!-- Filled/selected states (toggle buttons, chips, switches) -->
+        <item name="colorSecondaryContainer">@color/chip_selected_bg</item>
+        <item name="colorOnSecondaryContainer">@color/primary_green</item>
 
         <!-- Background & Surface -->
         <item name="android:colorBackground">@color/bg_light</item>

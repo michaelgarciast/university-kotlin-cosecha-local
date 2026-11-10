@@ -47,14 +47,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLoginTitle" />
 
-        <!-- Role Selector (Demo) -->
+        <!-- Role Selector -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardRoleSelect"
             style="@style/Widget.CosechaLocal.Card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_medium"
-            app:cardCornerRadius="@dimen/corner_radius_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLoginSubtitle">
@@ -69,40 +68,44 @@
                     android:id="@+id/tvRoleTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/role_select_title"
+                    android:text="@string/login_as_title"
                     android:textColor="@color/text_primary"
                     android:textSize="@dimen/text_size_body"
                     android:textStyle="bold" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupRole"
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleRole"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
+                    app:checkedButton="@id/btnRoleBuyer"
+                    app:selectionRequired="true"
                     app:singleSelection="true">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipBuyer"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRoleBuyer"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:checked="true"
+                        android:layout_weight="1"
                         android:text="@string/role_buyer" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipSeller"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRoleSeller"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="@string/role_seller" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipAdmin"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRoleAdmin"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="@string/role_admin" />
-                </com.google.android.material.chip.ChipGroup>
+                </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
