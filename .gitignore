@@ -1,15 +1,33 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+# Firebase config contiene claves del proyecto; no subir al repositorio
+google-services.json
+
+# Documentos internos del proyecto: solo locales
+firestore.rules
+PLAN_FASE_2.md
+FIREBASE_DATA_MODEL.md
+
+# Claves de firma de release (nunca se suben)
+*.jks
+*.keystore
+key.properties
+upload-keystore.*
+
+# Secretos y credenciales
+secrets.properties
+.env
+.env.*
+*.pem
+*.key
+serviceAccountKey.json
+firebase-adminsdk*.json
