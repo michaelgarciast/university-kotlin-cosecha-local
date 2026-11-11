@@ -13,7 +13,13 @@ object OrderRepository {
     private val db = FirebaseFirestore.getInstance()
     private val orders = db.collection("orders")
 
-    fun checkout(uid: String, address: String, onSuccess: (String) -> Unit, onError: (Exception) -> Unit) {
+    fun checkout(
+        uid: String,
+        address: String,
+        location: Map<String, Any>? = null,
+        onSuccess: (String) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
         val cartRef = db.collection("carts").document(uid)
         val buyerRef = db.collection("users").document(uid)
         db.runTransaction { tx ->
@@ -55,7 +61,7 @@ object OrderRepository {
                 )
             }
             val fee = CartRepository.SHIPPING_FEE.toLong()
-            tx.set(orderRef, mapOf(
+            val orderData = mutableMapOf<String, Any>(
                 "buyerId" to uid, "buyerName" to buyer.getString("name").orEmpty(),
                 "items" to orderItems,
                 "sellerIds" to orderItems.map { it["sellerId"] as String }.distinct(),
@@ -64,7 +70,9 @@ object OrderRepository {
                 "paymentStatus" to "PENDIENTE_PAGO", "deliveryStatus" to "PENDIENTE",
                 "createdAt" to FieldValue.serverTimestamp(),
                 "updatedAt" to FieldValue.serverTimestamp()
-            ))
+            )
+            location?.let { orderData["location"] = it }
+            tx.set(orderRef, orderData)
             tx.set(cartRef, mapOf(
                 "items" to emptyList<Any>(), "shippingFee" to CartRepository.SHIPPING_FEE,
                 "checkoutId" to UUID.randomUUID().toString(),

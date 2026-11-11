@@ -73,8 +73,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:text="@string/btn_use_location"
-            android:visibility="gone"
             app:icon="@drawable/ic_location" />
+
+        <TextView
+            android:id="@+id/tvLocationStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_body"
+            android:visibility="gone"
+            tools:text="Ubicación capturada" />
 
         <!-- Payment Method Section -->
         <TextView

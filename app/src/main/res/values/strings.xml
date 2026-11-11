@@ -137,7 +137,10 @@
     <string name="btn_pay">Registrar pedido sin pagar</string>
     <string name="order_created_title">Pedido registrado</string>
     <string name="order_created_message">Pedido #%1$s pendiente de pago. Todavía no se ha cobrado ni reservado el inventario.</string>
-    <string name="location_not_available">La ubicación estará disponible en la siguiente fase. Ingresa la dirección manualmente.</string>
+    <string name="location_captured">Ubicación capturada: %1$.5f, %2$.5f</string>
+    <string name="address_located">Dirección localizada: %1$.5f, %2$.5f</string>
+    <string name="location_unavailable">No se pudo obtener la ubicación. Intenta de nuevo o ingresa la dirección manualmente.</string>
+    <string name="location_permission_denied">Permiso de ubicación denegado. Puedes ingresar la dirección manualmente.</string>
     <string name="order_payment_status">Pago: %1$s. No se puede preparar hasta confirmar el pago.</string>
     <string name="buyer_orders_empty">Aún no tienes pedidos.</string>
     <string name="cancel_order">Cancelar pedido</string>
