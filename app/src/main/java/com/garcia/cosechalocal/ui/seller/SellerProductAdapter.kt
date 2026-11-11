@@ -11,6 +11,7 @@ import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.data.model.Product
 import com.garcia.cosechalocal.databinding.ItemSellerProductBinding
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.ProductImageStore
 
 class SellerProductAdapter(
     private val onEdit: (Product) -> Unit,
@@ -38,6 +39,11 @@ class SellerProductAdapter(
             binding.chipStock.setTextColor(
                 ContextCompat.getColor(ctx, if (low) R.color.error_red else R.color.primary_green)
             )
+            binding.chipStatus.setText(product.status.labelRes)
+            binding.chipStatus.chipBackgroundColor =
+                ColorStateList.valueOf(ContextCompat.getColor(ctx, product.status.bgColorRes))
+            binding.chipStatus.setTextColor(ContextCompat.getColor(ctx, product.status.textColorRes))
+            ProductImageStore.bind(binding.ivProductImage, product)
             binding.btnEdit.contentDescription = ctx.getString(R.string.cd_edit_product, product.name)
             binding.btnDelete.contentDescription = ctx.getString(R.string.cd_delete_product, product.name)
             binding.btnEdit.setOnClickListener { onEdit(product) }

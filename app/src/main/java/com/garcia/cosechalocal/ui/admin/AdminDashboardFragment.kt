@@ -34,7 +34,9 @@ class AdminDashboardFragment : Fragment() {
             binding.tvUsersValue.text = nf.format(users.size)
             binding.tvSellersValue.text = nf.format(users.count { it.role == UserRole.SELLER })
         }
-        binding.tvProductsValue.text = nf.format(AdminRepository.TOTAL_PRODUCTS)
+        viewModel.products.observe(viewLifecycleOwner) { products ->
+            binding.tvProductsValue.text = nf.format(products.size)
+        }
         binding.tvSalesTodayValue.text = FormatUtils.formatMillions(AdminRepository.SALES_TODAY)
 
         val orders = AdminRepository.getOrdersLast7Days()

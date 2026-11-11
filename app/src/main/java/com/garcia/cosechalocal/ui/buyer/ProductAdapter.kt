@@ -1,6 +1,7 @@
 package com.garcia.cosechalocal.ui.buyer
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +10,7 @@ import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.data.model.Product
 import com.garcia.cosechalocal.databinding.ItemProductBinding
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.ProductImageStore
 import java.util.Locale
 
 class ProductAdapter(
@@ -34,8 +36,15 @@ class ProductAdapter(
         fun bind(product: Product) {
             binding.tvProductName.text = product.name
             binding.tvProducerName.text = product.producer
-            binding.tvDistance.text = String.format(Locale.getDefault(), "%.1f km", product.distanceKm)
+            // La distancia real llega en la etapa de geolocalización.
+            val hasDistance = product.distanceKm > 0.0
+            binding.tvDistance.visibility = if (hasDistance) View.VISIBLE else View.GONE
+            binding.ivDistanceIcon.visibility = if (hasDistance) View.VISIBLE else View.GONE
+            if (hasDistance) {
+                binding.tvDistance.text = String.format(Locale.getDefault(), "%.1f km", product.distanceKm)
+            }
             binding.tvProductPrice.text = FormatUtils.formatPrice(product.price)
+            ProductImageStore.bind(binding.ivProductImage, product)
 
             binding.btnAddToCart.contentDescription =
                 binding.root.context.getString(R.string.cd_add_to_cart)

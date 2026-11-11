@@ -52,15 +52,31 @@
             app:layout_constraintTop_toBottomOf="@id/tvProductName"
             tools:text="$32.000" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipStock"
-            style="@style/Widget.CosechaLocal.Chip.Status"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/chipRow"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_small"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivProductImage"
-            app:layout_constraintTop_toBottomOf="@id/tvProductPrice"
-            tools:text="Stock: 15" />
+            app:layout_constraintTop_toBottomOf="@id/tvProductPrice">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStock"
+                style="@style/Widget.CosechaLocal.Chip.Status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Stock: 15" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipStatus"
+                style="@style/Widget.CosechaLocal.Chip.Status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny"
+                tools:text="Por aprobar" />
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDelete"
@@ -70,7 +86,7 @@
             android:text="@string/btn_delete"
             app:icon="@drawable/ic_delete"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chipStock" />
+            app:layout_constraintTop_toBottomOf="@id/chipRow" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEdit"
@@ -80,6 +96,6 @@
             android:text="@string/btn_edit"
             app:icon="@drawable/ic_edit"
             app:layout_constraintEnd_toStartOf="@id/btnDelete"
-            app:layout_constraintTop_toBottomOf="@id/chipStock" />
+            app:layout_constraintTop_toBottomOf="@id/chipRow" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

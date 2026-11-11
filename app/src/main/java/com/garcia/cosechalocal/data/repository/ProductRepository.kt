@@ -1,105 +1,161 @@
 package com.garcia.cosechalocal.data.repository
 
+import com.garcia.cosechalocal.data.model.ModerationStatus
 import com.garcia.cosechalocal.data.model.Product
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 
 object ProductRepository {
 
-    private val sampleProducts = listOf(
-        Product(
-            id = "p1",
-            name = "Café de origen 500 g",
-            producer = "Finca El Cafetal",
-            distanceKm = 3.2,
-            price = 32000,
-            stock = 15,
-            category = "Café",
-            description = "Café especial suave de origen antioqueño con notas a chocolate, caramelo y frutos rojos. Tostión media artesanal."
-        ),
-        Product(
-            id = "p2",
-            name = "Panela orgánica 1 kg",
-            producer = "Trapiche San José",
-            distanceKm = 5.1,
-            price = 8500,
-            stock = 30,
-            category = "Panela",
-            description = "Panela 100% natural y orgánica en pastilla, elaborada con caña de azúcar cultivada libre de agroquímicos."
-        ),
-        Product(
-            id = "p3",
-            name = "Miel de abejas 350 g",
-            producer = "Apícola La Montaña",
-            distanceKm = 2.8,
-            price = 18000,
-            stock = 12,
-            category = "Miel",
-            description = "Miel multifloral de abejas 100% pura, cosechada en los bosques nativos de la región con procesos sostenibles."
-        ),
-        Product(
-            id = "p4",
-            name = "Queso campesino 500 g",
-            producer = "Lácteos Don Pedro",
-            distanceKm = 4.5,
-            price = 14000,
-            stock = 20,
-            category = "Lácteos",
-            description = "Queso campesino fresco elaborado el mismo día con leche entera de vacas en pastoreo libre."
-        ),
-        Product(
-            id = "p5",
-            name = "Aguacate Hass 1 kg",
-            producer = "Huerta Verde",
-            distanceKm = 1.9,
-            price = 12000,
-            stock = 25,
-            category = "Frutas",
-            description = "Aguacates cremosos de calidad exportación, cultivados en las laderas de Santa Elena."
-        ),
-        Product(
-            id = "p6",
-            name = "Fresas frescas 500 g",
-            producer = "Cultivos El Roble",
-            distanceKm = 6.0,
-            price = 9500,
-            stock = 18,
-            category = "Frutas",
-            description = "Fresas rojas y dulces recién cosechadas de cultivos limpios en el oriente antioqueño."
-        ),
-        Product(
-            id = "p7",
-            name = "Yogurt artesanal 1 L",
-            producer = "Lácteos Don Pedro",
-            distanceKm = 4.5,
-            price = 11000,
-            stock = 10,
-            category = "Lácteos",
-            description = "Yogurt espeso y cremoso con trozos de fruta real, libre de conservantes y colorantes artificiales."
-        ),
-        Product(
-            id = "p8",
-            name = "Café tostado especial 250 g",
-            producer = "Finca La Esperanza",
-            distanceKm = 7.3,
-            price = 22000,
-            stock = 8,
-            category = "Café",
-            description = "Café de especialidad con perfil de taza limpio, fragancia intensa a jazmín y acidez brillante."
+    private val products = FirebaseFirestore.getInstance().collection("products")
+
+    private fun DocumentSnapshot.toProduct(): Product? {
+        val status = runCatching {
+            ModerationStatus.valueOf(getString("status").orEmpty())
+        }.getOrNull() ?: return null
+
+        return Product(
+            id = id,
+            sellerId = getString("sellerId").orEmpty(),
+            name = getString("name").orEmpty(),
+            producer = getString("sellerName").orEmpty(),
+            distanceKm = 0.0,
+            price = getLong("price")?.toInt() ?: 0,
+            stock = getLong("stock")?.toInt() ?: 0,
+            category = getString("category").orEmpty(),
+            description = getString("description").orEmpty(),
+            hasLocalImage = getBoolean("hasLocalImage") == true,
+            status = status
         )
+    }
+
+    private fun observe(
+        query: Query,
+        onChange: (List<Product>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration = query.addSnapshotListener { snapshot, error ->
+        if (error != null) {
+            onError(error)
+            return@addSnapshotListener
+        }
+        val list = snapshot?.documents.orEmpty()
+            .mapNotNull { it.toProduct() }
+            .sortedBy { it.name.lowercase() }
+        onChange(list)
+    }
+
+    fun observeSellerProducts(
+        sellerId: String,
+        onChange: (List<Product>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration = observe(products.whereEqualTo("sellerId", sellerId), onChange, onError)
+
+    fun observeApprovedProducts(
+        onChange: (List<Product>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration = observe(
+        products.whereEqualTo("status", ModerationStatus.APROBADO.name),
+        onChange,
+        onError
     )
 
-    fun getProducts(): List<Product> = sampleProducts
+    fun observeAllProducts(
+        onChange: (List<Product>) -> Unit,
+        onError: (Exception) -> Unit
+    ): ListenerRegistration = observe(products, onChange, onError)
 
-    fun getProductById(id: String): Product? = sampleProducts.find { it.id == id }
+    fun getProduct(
+        productId: String,
+        onSuccess: (Product?) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        products.document(productId).get()
+            .addOnSuccessListener { document ->
+                onSuccess(if (document.exists()) document.toProduct() else null)
+            }
+            .addOnFailureListener(onError)
+    }
 
-    fun filterProducts(query: String, category: String): List<Product> {
-        return sampleProducts.filter { product ->
-            val matchesQuery = query.isBlank() ||
-                    product.name.contains(query, ignoreCase = true) ||
-                    product.producer.contains(query, ignoreCase = true) ||
-                    product.description.contains(query, ignoreCase = true)
-            val matchesCategory = category.equals("Todo", ignoreCase = true) ||
-                    product.category.equals(category, ignoreCase = true)
-            matchesQuery && matchesCategory
-        }
+    fun createProduct(
+        sellerId: String,
+        sellerName: String,
+        name: String,
+        price: Int,
+        stock: Int,
+        category: String,
+        description: String,
+        hasLocalImage: Boolean,
+        onSuccess: (String) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val data = hashMapOf(
+            "sellerId" to sellerId,
+            "sellerName" to sellerName,
+            "name" to name,
+            "price" to price,
+            "stock" to stock,
+            "category" to category,
+            "description" to description,
+            "hasLocalImage" to hasLocalImage,
+            "status" to ModerationStatus.POR_APROBAR.name,
+            "createdAt" to FieldValue.serverTimestamp(),
+            "updatedAt" to FieldValue.serverTimestamp()
+        )
+        products.add(data)
+            .addOnSuccessListener { onSuccess(it.id) }
+            .addOnFailureListener(onError)
+    }
+
+    fun updateProduct(
+        productId: String,
+        name: String,
+        price: Int,
+        stock: Int,
+        category: String,
+        description: String,
+        hasLocalImage: Boolean,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        products.document(productId).update(
+            mapOf(
+                "name" to name,
+                "price" to price,
+                "stock" to stock,
+                "category" to category,
+                "description" to description,
+                "hasLocalImage" to hasLocalImage,
+                "updatedAt" to FieldValue.serverTimestamp()
+            )
+        ).addOnSuccessListener { onSuccess() }
+            .addOnFailureListener(onError)
+    }
+
+    fun setStatus(
+        productId: String,
+        status: ModerationStatus,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        products.document(productId).update(
+            mapOf(
+                "status" to status.name,
+                "updatedAt" to FieldValue.serverTimestamp()
+            )
+        ).addOnSuccessListener { onSuccess() }
+            .addOnFailureListener(onError)
+    }
+
+    fun deleteProduct(
+        productId: String,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        products.document(productId).delete()
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener(onError)
     }
 }

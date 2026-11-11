@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.garcia.cosechalocal.data.model.ModerationStatus
+import com.garcia.cosechalocal.data.model.Product
 import com.garcia.cosechalocal.data.model.ProductModeration
 import com.garcia.cosechalocal.data.model.SalesPeriod
 import com.garcia.cosechalocal.data.model.SalesReport
 import com.garcia.cosechalocal.data.model.UserProfile
 import com.garcia.cosechalocal.data.repository.AdminRepository
 import com.garcia.cosechalocal.data.repository.AuthRepository
+import com.garcia.cosechalocal.data.repository.ProductRepository
 import com.garcia.cosechalocal.data.repository.UserRepository
 import com.garcia.cosechalocal.ui.common.UserRole
 import com.google.firebase.firestore.ListenerRegistration
@@ -23,7 +25,11 @@ class AdminViewModel : ViewModel() {
     private val _usersError = MutableLiveData<Exception?>(null)
     private var usersRegistration: ListenerRegistration? = null
 
-    private val _products = MutableLiveData(AdminRepository.getProducts())
+    private val _products = MutableLiveData<List<Product>>(emptyList())
+    private val _productsLoading = MutableLiveData(true)
+    private val _productsError = MutableLiveData<Exception?>(null)
+    private var productsRegistration: ListenerRegistration? = null
+
     private val _query = MutableLiveData("")
     private val _roleFilter = MutableLiveData<UserRole?>(null)
     private val _statusFilter = MutableLiveData<ModerationStatus?>(null)
@@ -38,6 +44,10 @@ class AdminViewModel : ViewModel() {
     val usersLoading: LiveData<Boolean> = _usersLoading
     val usersError: LiveData<Exception?> = _usersError
 
+    val products: LiveData<List<Product>> = _products
+    val productsLoading: LiveData<Boolean> = _productsLoading
+    val productsError: LiveData<Exception?> = _productsError
+
     init {
         usersRegistration = UserRepository.observeUsers(
             onChange = { list ->
@@ -50,10 +60,21 @@ class AdminViewModel : ViewModel() {
                 _usersError.value = error
             }
         )
+        productsRegistration = ProductRepository.observeAllProducts(
+            onChange = { list ->
+                _products.value = list
+                _productsLoading.value = false
+            },
+            onError = { error ->
+                _productsLoading.value = false
+                _productsError.value = error
+            }
+        )
     }
 
     override fun onCleared() {
         usersRegistration?.remove()
+        productsRegistration?.remove()
         super.onCleared()
     }
 
@@ -74,7 +95,9 @@ class AdminViewModel : ViewModel() {
     val filteredProducts: LiveData<List<ProductModeration>> = MediatorLiveData<List<ProductModeration>>().apply {
         fun update() {
             val s = statusFilter
-            value = _products.value.orEmpty().filter { s == null || it.status == s }
+            value = _products.value.orEmpty()
+                .map { ProductModeration(it, it.status, it.producer) }
+                .filter { s == null || it.status == s }
         }
         addSource(_products) { update() }
         addSource(_statusFilter) { update() }
@@ -91,6 +114,7 @@ class AdminViewModel : ViewModel() {
     fun setStatusFilter(status: ModerationStatus?) { _statusFilter.value = status }
     fun setPeriod(period: SalesPeriod) { _period.value = period }
     fun clearUsersError() { _usersError.value = null }
+    fun clearProductsError() { _productsError.value = null }
 
     fun isSelf(uid: String): Boolean = uid == AuthRepository.currentUser?.uid
 
@@ -132,12 +156,19 @@ class AdminViewModel : ViewModel() {
     ) = UserRepository.deleteUser(uid, onSuccess, onError)
 
     fun setProductStatus(productId: String, status: ModerationStatus) {
-        _products.value = _products.value.orEmpty().map {
-            if (it.product.id == productId) it.copy(status = status) else it
-        }
+        ProductRepository.setStatus(
+            productId = productId,
+            status = status,
+            onSuccess = {},
+            onError = { _productsError.value = it }
+        )
     }
 
     fun deleteProduct(productId: String) {
-        _products.value = _products.value.orEmpty().filterNot { it.product.id == productId }
+        ProductRepository.deleteProduct(
+            productId = productId,
+            onSuccess = {},
+            onError = { _productsError.value = it }
+        )
     }
 }

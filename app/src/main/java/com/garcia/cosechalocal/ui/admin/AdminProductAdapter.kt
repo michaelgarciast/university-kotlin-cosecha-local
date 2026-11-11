@@ -11,6 +11,7 @@ import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.data.model.ProductModeration
 import com.garcia.cosechalocal.databinding.ItemAdminProductBinding
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.ProductImageStore
 
 class AdminProductAdapter(
     private val onApprove: (ProductModeration) -> Unit,
@@ -35,6 +36,7 @@ class AdminProductAdapter(
             binding.chipProductStatus.chipBackgroundColor =
                 ColorStateList.valueOf(ContextCompat.getColor(ctx, item.status.bgColorRes))
             binding.chipProductStatus.setTextColor(ContextCompat.getColor(ctx, item.status.textColorRes))
+            ProductImageStore.bind(binding.ivProductImage, item.product)
             binding.btnApprove.contentDescription = ctx.getString(R.string.cd_approve_product, name)
             binding.btnSuspend.contentDescription = ctx.getString(R.string.cd_suspend_product, name)
             binding.btnDeleteProduct.contentDescription = ctx.getString(R.string.cd_delete_product, name)

@@ -188,8 +188,15 @@
     <string name="form_category">Categoría</string>
     <string name="form_description">Descripción</string>
     <string name="btn_take_photo">Tomar foto</string>
-    <string name="photo_simulated">Cámara no disponible (simulado)</string>
+    <string name="btn_pick_image">Elegir de galería</string>
+    <string name="btn_remove_photo">Quitar foto</string>
     <string name="location_simulated">Ubicación de la finca registrada (simulado)</string>
+    <string name="error_image_processing">No se pudo procesar la imagen seleccionada</string>
+    <string name="error_product_save">No se pudo guardar el producto</string>
+    <string name="error_product_delete">No se pudo eliminar el producto</string>
+    <string name="error_product_load">No se pudo cargar el producto</string>
+    <string name="error_products_load">No se pudieron cargar los productos</string>
+    <string name="error_product_status">No se pudo cambiar el estado del producto</string>
     <string name="error_name_required">El nombre es obligatorio</string>
     <string name="error_price_invalid">El precio debe ser mayor a 0</string>
     <string name="error_stock_invalid">El stock debe ser 0 o más</string>

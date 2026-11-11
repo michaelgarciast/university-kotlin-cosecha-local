@@ -1,7 +1,6 @@
 package com.garcia.cosechalocal.ui.admin
 
 import com.garcia.cosechalocal.R
-import com.garcia.cosechalocal.data.model.ModerationStatus
 import com.garcia.cosechalocal.ui.common.UserRole
 
 val UserRole.bgColorRes: Int
@@ -18,23 +17,4 @@ val UserRole.textColorRes: Int
         UserRole.ADMIN -> R.color.status_shipped_text
     }
 
-val ModerationStatus.labelRes: Int
-    get() = when (this) {
-        ModerationStatus.POR_APROBAR -> R.string.product_status_pending
-        ModerationStatus.APROBADO -> R.string.product_status_approved
-        ModerationStatus.SUSPENDIDO -> R.string.product_status_suspended
-    }
 
-val ModerationStatus.bgColorRes: Int
-    get() = when (this) {
-        ModerationStatus.POR_APROBAR -> R.color.status_pending_bg
-        ModerationStatus.APROBADO -> R.color.status_delivered_bg
-        ModerationStatus.SUSPENDIDO -> R.color.stock_low_bg
-    }
-
-val ModerationStatus.textColorRes: Int
-    get() = when (this) {
-        ModerationStatus.POR_APROBAR -> R.color.status_pending_text
-        ModerationStatus.APROBADO -> R.color.status_delivered_text
-        ModerationStatus.SUSPENDIDO -> R.color.error_red
-    }

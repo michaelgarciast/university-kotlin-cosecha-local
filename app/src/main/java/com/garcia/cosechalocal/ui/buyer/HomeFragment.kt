@@ -12,8 +12,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.garcia.cosechalocal.R
-import com.garcia.cosechalocal.data.repository.ProductRepository
 import com.garcia.cosechalocal.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
@@ -21,6 +21,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val cartViewModel: CartViewModel by activityViewModels()
+    private val catalogViewModel: CatalogViewModel by activityViewModels()
     private lateinit var adapter: ProductAdapter
     private var selectedCategory: String = "Todo"
 
@@ -38,7 +39,14 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
         setupFilters()
-        filterProducts()
+
+        catalogViewModel.products.observe(viewLifecycleOwner) { filterProducts() }
+        catalogViewModel.productsError.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                Snackbar.make(binding.root, R.string.error_products_load, Snackbar.LENGTH_LONG).show()
+                catalogViewModel.clearProductsError()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -91,7 +99,7 @@ class HomeFragment : Fragment() {
 
     private fun filterProducts() {
         val query = binding.etSearch.text?.toString()?.trim().orEmpty()
-        val filteredList = ProductRepository.filterProducts(query, selectedCategory)
+        val filteredList = catalogViewModel.filter(query, selectedCategory)
         adapter.submitList(filteredList)
     }
 

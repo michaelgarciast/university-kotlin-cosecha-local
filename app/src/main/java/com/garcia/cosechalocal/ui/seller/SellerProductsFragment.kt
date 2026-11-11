@@ -36,10 +36,22 @@ class SellerProductsFragment : Fragment() {
         binding.rvSellerProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSellerProducts.adapter = adapter
 
+        viewModel.productsLoading.observe(viewLifecycleOwner) { loading ->
+            val showEmpty = !loading && viewModel.filteredProducts.value.isNullOrEmpty()
+            binding.emptyState.visibility = if (showEmpty) View.VISIBLE else View.GONE
+            binding.rvSellerProducts.visibility = if (showEmpty) View.GONE else View.VISIBLE
+        }
+        viewModel.productsError.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                Snackbar.make(binding.root, R.string.error_products_load, Snackbar.LENGTH_LONG).show()
+                viewModel.clearProductsError()
+            }
+        }
         viewModel.filteredProducts.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            binding.emptyState.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
-            binding.rvSellerProducts.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+            val showEmpty = it.isEmpty() && viewModel.productsLoading.value != true
+            binding.emptyState.visibility = if (showEmpty) View.VISIBLE else View.GONE
+            binding.rvSellerProducts.visibility = if (showEmpty) View.GONE else View.VISIBLE
         }
 
         binding.etSearchProducts.doAfterTextChanged { viewModel.setQuery(it?.toString().orEmpty()) }
@@ -51,8 +63,19 @@ class SellerProductsFragment : Fragment() {
             .setTitle(R.string.delete_product_title)
             .setMessage(getString(R.string.delete_product_message, product.name))
             .setPositiveButton(R.string.btn_confirm_delete) { _, _ ->
-                viewModel.deleteProduct(product.id)
-                Snackbar.make(binding.root, R.string.product_deleted, Snackbar.LENGTH_SHORT).show()
+                viewModel.deleteProduct(
+                    product = product,
+                    onDeleted = {
+                        if (isAdded) {
+                            Snackbar.make(binding.root, R.string.product_deleted, Snackbar.LENGTH_SHORT).show()
+                        }
+                    },
+                    onError = {
+                        if (isAdded) {
+                            Snackbar.make(binding.root, R.string.error_product_delete, Snackbar.LENGTH_LONG).show()
+                        }
+                    }
+                )
             }
             .setNegativeButton(R.string.btn_cancel, null)
             .show()

@@ -13,6 +13,7 @@ import com.garcia.cosechalocal.data.model.Product
 import com.garcia.cosechalocal.data.repository.ProductRepository
 import com.garcia.cosechalocal.databinding.FragmentProductDetailBinding
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.ProductImageStore
 import java.util.Locale
 
 class ProductDetailFragment : Fragment() {
@@ -37,18 +38,27 @@ class ProductDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val productId = arguments?.getString("productId")
-        if (productId != null) {
-            product = ProductRepository.getProductById(productId)
-        }
-
-        if (product == null) {
-            Toast.makeText(requireContext(), getString(R.string.error_product_not_found), Toast.LENGTH_SHORT).show()
-            findNavController().navigateUp()
+        if (productId == null) {
+            showErrorAndExit()
             return
         }
 
-        setupProductInfo()
-        setupListeners()
+        ProductRepository.getProduct(
+            productId = productId,
+            onSuccess = { loaded ->
+                if (!isAdded) return@getProduct
+                if (loaded == null) {
+                    showErrorAndExit()
+                    return@getProduct
+                }
+                product = loaded
+                setupProductInfo()
+                setupListeners()
+            },
+            onError = {
+                if (isAdded) showErrorAndExit()
+            }
+        )
     }
 
     private fun setupProductInfo() {
@@ -58,8 +68,14 @@ class ProductDetailFragment : Fragment() {
         binding.chipStock.text = getString(R.string.product_stock, p.stock)
         binding.tvDescription.text = p.description
         binding.tvProducerName.text = p.producer
-        binding.tvProducerDistance.text = String.format(Locale.getDefault(), "A %.1f km de tu ubicación", p.distanceKm)
+        binding.tvProducerDistance.visibility =
+            if (p.distanceKm > 0.0) View.VISIBLE else View.GONE
+        if (p.distanceKm > 0.0) {
+            binding.tvProducerDistance.text =
+                String.format(Locale.getDefault(), "A %.1f km de tu ubicación", p.distanceKm)
+        }
         binding.tvQuantity.text = currentQuantity.toString()
+        ProductImageStore.bind(binding.ivProductDetailImage, p)
     }
 
     private fun setupListeners() {
@@ -92,6 +108,11 @@ class ProductDetailFragment : Fragment() {
             ).show()
             findNavController().navigateUp()
         }
+    }
+
+    private fun showErrorAndExit() {
+        Toast.makeText(requireContext(), getString(R.string.error_product_not_found), Toast.LENGTH_SHORT).show()
+        findNavController().navigateUp()
     }
 
     override fun onDestroyView() {
