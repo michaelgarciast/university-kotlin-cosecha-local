@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,9 @@ class SellerOrdersFragment : Fragment() {
             adapter.submitList(it)
             binding.tvEmptyOrders.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
+        viewModel.ordersError.observe(viewLifecycleOwner) {
+            if (it != null) Toast.makeText(requireContext(), it.localizedMessage, Toast.LENGTH_LONG).show()
+        }
 
         binding.chipGroupOrders.setOnCheckedStateChangeListener { _, ids ->
             viewModel.setStatusFilter(
@@ -67,17 +71,13 @@ class SellerOrdersFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.order_number_format, order.id))
             .setView(dialogBinding.root)
-            .setPositiveButton(R.string.btn_save) { _, _ ->
-                val status = when (dialogBinding.chipGroupStatus.checkedChipId) {
-                    R.id.chipStatusPreparando -> OrderStatus.PREPARANDO
-                    R.id.chipStatusEnviado -> OrderStatus.ENVIADO
-                    R.id.chipStatusEntregado -> OrderStatus.ENTREGADO
-                    else -> OrderStatus.PENDIENTE
-                }
-                viewModel.updateOrderStatus(order.id, status)
-            }
-            .setNegativeButton(R.string.btn_cancel, null)
+            .setMessage(getString(R.string.order_payment_status, order.paymentStatus))
+            .setPositiveButton(R.string.btn_accept, null)
             .show()
+        dialogBinding.chipGroupStatus.isEnabled = false
+        for (index in 0 until dialogBinding.chipGroupStatus.childCount) {
+            dialogBinding.chipGroupStatus.getChildAt(index).isEnabled = false
+        }
     }
 
     override fun onDestroyView() {

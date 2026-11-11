@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setupRoleMenu(role: UserRole) {
+        if (role == UserRole.BUYER) cartViewModel.connect()
         val menuRes = when (role) {
             UserRole.BUYER -> R.menu.menu_buyer
             UserRole.SELLER -> R.menu.menu_seller

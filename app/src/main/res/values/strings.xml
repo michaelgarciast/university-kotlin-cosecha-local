@@ -125,7 +125,7 @@
     <string name="unit_price_format">%s c/u</string>
 
     <!-- Checkout / Pasarela de Pagos -->
-    <string name="checkout_title">Pasarela de Pagos</string>
+    <string name="checkout_title">Registrar pedido</string>
     <string name="delivery_address_section">Dirección de entrega</string>
     <string name="delivery_address_hint">Ingresa tu dirección de envío</string>
     <string name="btn_use_location">Usar mi ubicación</string>
@@ -134,7 +134,14 @@
     <string name="payment_card">Tarjeta crédito / débito</string>
     <string name="payment_pse">PSE (Débito bancario)</string>
     <string name="payment_nequi">Nequi / Daviplata</string>
-    <string name="btn_pay">Pagar</string>
+    <string name="btn_pay">Registrar pedido sin pagar</string>
+    <string name="order_created_title">Pedido registrado</string>
+    <string name="order_created_message">Pedido #%1$s pendiente de pago. Todavía no se ha cobrado ni reservado el inventario.</string>
+    <string name="location_not_available">La ubicación estará disponible en la siguiente fase. Ingresa la dirección manualmente.</string>
+    <string name="order_payment_status">Pago: %1$s. No se puede preparar hasta confirmar el pago.</string>
+    <string name="buyer_orders_empty">Aún no tienes pedidos.</string>
+    <string name="cancel_order">Cancelar pedido</string>
+    <string name="order_detail_text">Productos: %1$s\nDirección: %2$s\nPago: %3$s\nTotal: %4$s</string>
     <string name="error_select_payment">Por favor selecciona un método de pago</string>
     <string name="checkout_dialog_title">¡Pago Exitoso!</string>
     <string name="checkout_dialog_msg">¡Gracias por tu compra! Tu pedido se ha registrado correctamente.\n\nDirección de entrega:\n%1$s\n\nMétodo de pago:\n%2$s\n\nTotal pagado: %3$s</string>
@@ -208,7 +215,7 @@
     <string name="status_shipped">Enviado</string>
     <string name="status_delivered">Entregado</string>
     <string name="no_orders_found">No hay pedidos con este estado</string>
-    <string name="order_number_format">Pedido #%1$d</string>
+    <string name="order_number_format">Pedido #%1$s</string>
     <string name="order_detail_buyer">Comprador</string>
     <string name="order_detail_items">Productos</string>
     <string name="order_detail_total">Total</string>
@@ -217,7 +224,7 @@
     <string name="store_title">Mi tienda</string>
     <string name="cd_edit_product">Editar %1$s</string>
     <string name="cd_delete_product">Eliminar %1$s</string>
-    <string name="cd_order_item">Ver detalle del pedido %1$d</string>
+    <string name="cd_order_item">Ver detalle del pedido %1$s</string>
     <string name="cd_add_new_product">Crear nuevo producto</string>
     <string name="cd_search_my_products">Buscar en mis productos</string>
     <string name="cd_stat_icon">Ícono de resumen</string>

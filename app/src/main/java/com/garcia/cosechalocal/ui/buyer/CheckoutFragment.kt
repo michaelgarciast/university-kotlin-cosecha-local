@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.databinding.FragmentCheckoutBinding
+import com.garcia.cosechalocal.data.repository.AuthRepository
+import com.garcia.cosechalocal.data.repository.OrderRepository
 import com.garcia.cosechalocal.utils.FormatUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -33,6 +35,7 @@ class CheckoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupTotals()
+        cartViewModel.connect()
         setupListeners()
     }
 
@@ -52,8 +55,7 @@ class CheckoutFragment : Fragment() {
         }
 
         binding.btnUseLocation.setOnClickListener {
-            binding.etAddress.setText(getString(R.string.simulated_address))
-            binding.tilAddress.error = null
+            Toast.makeText(requireContext(), R.string.location_not_available, Toast.LENGTH_SHORT).show()
         }
 
         binding.btnPay.setOnClickListener {
@@ -70,29 +72,23 @@ class CheckoutFragment : Fragment() {
             binding.tilAddress.error = null
         }
 
-        val selectedPayment = when (binding.rgPaymentMethods.checkedRadioButtonId) {
-            R.id.rbCard -> getString(R.string.payment_card)
-            R.id.rbPse -> getString(R.string.payment_pse)
-            R.id.rbNequi -> getString(R.string.payment_nequi)
-            else -> {
-                Toast.makeText(requireContext(), getString(R.string.error_select_payment), Toast.LENGTH_SHORT).show()
-                return
+        val uid = AuthRepository.currentUser?.uid ?: return
+        binding.btnPay.isEnabled = false
+        OrderRepository.checkout(uid, address, { id ->
+            if (_binding != null) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.order_created_title)
+                    .setMessage(getString(R.string.order_created_message, id))
+                    .setPositiveButton(R.string.btn_accept) { _, _ ->
+                        findNavController().navigate(R.id.navigation_buyer_orders)
+                    }.show()
             }
-        }
-
-        val totalAmount = cartViewModel.total.value ?: 0
-        val formattedTotal = FormatUtils.formatPrice(totalAmount)
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.checkout_dialog_title))
-            .setMessage(getString(R.string.checkout_dialog_msg, address, selectedPayment, formattedTotal))
-            .setPositiveButton(getString(R.string.btn_accept)) { dialog, _ ->
-                dialog.dismiss()
-                cartViewModel.clearCart()
-                findNavController().navigate(R.id.navigation_buyer_home)
+        }, { error ->
+            if (_binding != null) {
+                binding.btnPay.isEnabled = true
+                Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
             }
-            .setCancelable(false)
-            .show()
+        })
     }
 
     override fun onDestroyView() {

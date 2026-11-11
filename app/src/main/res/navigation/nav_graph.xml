@@ -91,9 +91,9 @@
 
     <fragment
         android:id="@+id/navigation_buyer_orders"
-        android:name="com.garcia.cosechalocal.ui.common.PlaceholderFragment"
+        android:name="com.garcia.cosechalocal.ui.buyer.BuyerOrdersFragment"
         android:label="@string/menu_buyer_orders"
-        tools:layout="@layout/fragment_placeholder" />
+        tools:layout="@layout/fragment_buyer_orders" />
 
     <fragment
         android:id="@+id/navigation_buyer_profile"

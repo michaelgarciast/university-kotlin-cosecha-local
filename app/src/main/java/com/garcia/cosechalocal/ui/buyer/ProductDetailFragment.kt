@@ -101,11 +101,6 @@ class ProductDetailFragment : Fragment() {
         binding.btnAddToCart.setOnClickListener {
             val p = product ?: return@setOnClickListener
             cartViewModel.addToCart(p, currentQuantity)
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.added_to_cart_toast, p.name, currentQuantity),
-                Toast.LENGTH_SHORT
-            ).show()
             findNavController().navigateUp()
         }
     }

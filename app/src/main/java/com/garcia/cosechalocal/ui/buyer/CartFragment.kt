@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.Toast
 import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.databinding.FragmentCartBinding
 import com.garcia.cosechalocal.utils.FormatUtils
@@ -33,6 +34,7 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        cartViewModel.connect()
         observeCart()
         setupListeners()
     }
@@ -55,6 +57,13 @@ class CartFragment : Fragment() {
     }
 
     private fun observeCart() {
+        cartViewModel.loading.observe(viewLifecycleOwner) { binding.btnCheckout.isEnabled = !it }
+        cartViewModel.error.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
+                cartViewModel.clearError()
+            }
+        }
         cartViewModel.cartItems.observe(viewLifecycleOwner) { items ->
             adapter.submitList(items)
             if (items.isNullOrEmpty()) {
@@ -83,7 +92,9 @@ class CartFragment : Fragment() {
         }
 
         binding.btnCheckout.setOnClickListener {
-            findNavController().navigate(R.id.action_buyer_cart_to_checkout)
+            if (!cartViewModel.cartItems.value.isNullOrEmpty()) {
+                findNavController().navigate(R.id.action_buyer_cart_to_checkout)
+            }
         }
     }
 

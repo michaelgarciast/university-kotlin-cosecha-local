@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:text="@string/btn_use_location"
+            android:visibility="gone"
             app:icon="@drawable/ic_location" />
 
         <!-- Payment Method Section -->
@@ -81,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_large"
             android:text="@string/payment_method_section"
+            android:visibility="gone"
             android:textColor="@color/text_primary"
             android:textSize="@dimen/text_size_title"
             android:textStyle="bold" />
@@ -89,7 +91,8 @@
             style="@style/Widget.CosechaLocal.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_small">
+            android:layout_marginTop="@dimen/spacing_small"
+            android:visibility="gone">
 
             <RadioGroup
                 android:id="@+id/rgPaymentMethods"

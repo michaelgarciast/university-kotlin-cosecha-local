@@ -15,7 +15,7 @@ import com.garcia.cosechalocal.data.repository.AuthRepository
 import com.garcia.cosechalocal.data.repository.MissingProfileException
 import com.garcia.cosechalocal.data.repository.ProductImageRepository
 import com.garcia.cosechalocal.data.repository.ProductRepository
-import com.garcia.cosechalocal.data.repository.SellerRepository
+import com.garcia.cosechalocal.data.repository.OrderRepository
 import com.garcia.cosechalocal.utils.ProductImageStore
 import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.launch
@@ -30,7 +30,10 @@ class SellerViewModel(application: Application) : AndroidViewModel(application) 
     private var productsRegistration: ListenerRegistration? = null
     private var profile: UserProfile? = null
 
-    private val _orders = MutableLiveData(SellerRepository.getOrders())
+    private val _orders = MutableLiveData<List<Order>>(emptyList())
+    private val _ordersError = MutableLiveData<Exception?>()
+    val ordersError: LiveData<Exception?> = _ordersError
+    private var ordersRegistration: ListenerRegistration? = null
     private val query = MutableLiveData("")
     private val statusFilter = MutableLiveData<OrderStatus?>(null)
 
@@ -58,11 +61,13 @@ class SellerViewModel(application: Application) : AndroidViewModel(application) 
                     _productsError.value = error
                 }
             )
+            ordersRegistration = OrderRepository.observeSeller(uid, { _orders.value = it }, { _ordersError.value = it })
         }
     }
 
     override fun onCleared() {
         productsRegistration?.remove()
+        ordersRegistration?.remove()
         super.onCleared()
     }
 
@@ -89,7 +94,7 @@ class SellerViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     val monthlySales: LiveData<Int> = _orders.map { list ->
-        list.filter { it.status != OrderStatus.PENDIENTE }.sumOf { it.total }
+        list.filter { it.paymentStatus == "APROBADO" }.sumOf { it.total }
     }
     val pendingOrders: LiveData<Int> = _orders.map { list ->
         list.count { it.status == OrderStatus.PENDIENTE }
@@ -201,9 +206,4 @@ class SellerViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun getOrder(id: Int): Order? = _orders.value.orEmpty().firstOrNull { it.id == id }
-
-    fun updateOrderStatus(orderId: Int, status: OrderStatus) {
-        _orders.value = _orders.value.orEmpty().map { if (it.id == orderId) it.copy(status = status) else it }
-    }
 }
