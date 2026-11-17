@@ -118,6 +118,51 @@ object OrderRepository {
         )
     }
 
+    const val SANDBOX_PROVIDER = "SANDBOX_SIMULADO"
+
+    fun payWithSandbox(
+        orderId: String,
+        approved: Boolean,
+        onSuccess: (status: String, reference: String?) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val orderRef = orders.document(orderId)
+        db.runTransaction { tx ->
+            val order = tx.get(orderRef)
+            val current = order.getString("paymentStatus")
+            if (current == "APROBADO") return@runTransaction "APROBADO" to order.getString("paymentReference")
+            if (current != "PENDIENTE_PAGO" && current != "RECHAZADO") {
+                throw IllegalStateException("El pedido ya no admite pago")
+            }
+            val rows = (order.get("items") as? List<*>).orEmpty().mapNotNull { it as? Map<*, *> }
+            val reference = "SBX-" + UUID.randomUUID().toString().take(8).uppercase()
+            if (!approved) {
+                tx.update(orderRef, mapOf(
+                    "paymentStatus" to "RECHAZADO", "paymentProvider" to SANDBOX_PROVIDER,
+                    "paymentReference" to reference, "updatedAt" to FieldValue.serverTimestamp()
+                ))
+                return@runTransaction "RECHAZADO" to reference
+            }
+            val products = rows.map { tx.get(db.collection("products").document(it["productId"] as String)) }
+            val stocks = rows.zip(products).map { (row, product) ->
+                val qty = (row["quantity"] as? Number)?.toLong() ?: 0L
+                val stock = product.getLong("stock") ?: 0L
+                if (!product.exists() || qty > stock) throw IllegalStateException("Sin stock suficiente para ${row["name"]}")
+                product to stock - qty
+            }
+            stocks.forEach { (product, left) ->
+                tx.update(product.reference, mapOf(
+                    "stock" to left, "lastOrderId" to orderId, "updatedAt" to FieldValue.serverTimestamp()
+                ))
+            }
+            tx.update(orderRef, mapOf(
+                "paymentStatus" to "APROBADO", "paymentProvider" to SANDBOX_PROVIDER,
+                "paymentReference" to reference, "updatedAt" to FieldValue.serverTimestamp()
+            ))
+            "APROBADO" to reference
+        }.addOnSuccessListener { onSuccess(it.first, it.second) }.addOnFailureListener(onError)
+    }
+
     fun cancel(orderId: String, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         orders.document(orderId).update(
             mapOf("paymentStatus" to "CANCELADO", "updatedAt" to FieldValue.serverTimestamp())

@@ -14,6 +14,7 @@ import com.garcia.cosechalocal.data.repository.OrderRepository
 import com.garcia.cosechalocal.databinding.FragmentBuyerOrdersBinding
 import com.garcia.cosechalocal.ui.seller.OrderAdapter
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.userMessage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.firestore.ListenerRegistration
 
@@ -39,7 +40,7 @@ class BuyerOrdersFragment : Fragment() {
                 binding.tvEmptyOrders.visibility = if (orders.isEmpty()) View.VISIBLE else View.GONE
             }
         }, { error ->
-            if (_binding != null) Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
+            if (_binding != null) Toast.makeText(requireContext(), error.userMessage(requireContext()), Toast.LENGTH_LONG).show()
         })
     }
 
@@ -49,10 +50,13 @@ class BuyerOrdersFragment : Fragment() {
             .setMessage(getString(R.string.order_detail_text, order.itemsSummary, order.address,
                 order.paymentStatus, FormatUtils.formatPrice(order.total)))
             .setNegativeButton(R.string.btn_accept, null)
-        if (order.paymentStatus == "PENDIENTE_PAGO") {
+        if (order.paymentStatus == "PENDIENTE_PAGO" || order.paymentStatus == "RECHAZADO") {
+            dialog.setNeutralButton(R.string.pay_order_action) { _, _ ->
+                SandboxPayment.show(requireContext(), order.id, order.total)
+            }
             dialog.setPositiveButton(R.string.cancel_order) { _, _ ->
                 OrderRepository.cancel(order.id, {}, { error ->
-                    if (isAdded) Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
+                    if (isAdded) Toast.makeText(requireContext(), error.userMessage(requireContext()), Toast.LENGTH_LONG).show()
                 })
             }
         }

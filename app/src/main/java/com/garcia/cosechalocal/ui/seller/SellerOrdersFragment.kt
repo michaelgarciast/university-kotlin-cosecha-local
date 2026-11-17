@@ -14,6 +14,7 @@ import com.garcia.cosechalocal.data.model.OrderStatus
 import com.garcia.cosechalocal.databinding.DialogOrderDetailBinding
 import com.garcia.cosechalocal.databinding.FragmentSellerOrdersBinding
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.userMessage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SellerOrdersFragment : Fragment() {
@@ -38,7 +39,7 @@ class SellerOrdersFragment : Fragment() {
             binding.tvEmptyOrders.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
         }
         viewModel.ordersError.observe(viewLifecycleOwner) {
-            if (it != null) Toast.makeText(requireContext(), it.localizedMessage, Toast.LENGTH_LONG).show()
+            if (it != null) Toast.makeText(requireContext(), it.userMessage(requireContext()), Toast.LENGTH_LONG).show()
         }
 
         binding.chipGroupOrders.setOnCheckedStateChangeListener { _, ids ->

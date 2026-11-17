@@ -5,8 +5,6 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -17,16 +15,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.databinding.FragmentCheckoutBinding
 import com.garcia.cosechalocal.data.repository.AuthRepository
 import com.garcia.cosechalocal.data.repository.OrderRepository
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.userMessage
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CheckoutFragment : Fragment() {
 
@@ -36,9 +41,7 @@ class CheckoutFragment : Fragment() {
     private val cartViewModel: CartViewModel by activityViewModels()
 
     private var capturedLocation: Location? = null
-    private var geocodeThread: Thread? = null
-    private val geocodeHandler = Handler(Looper.getMainLooper())
-    private val geocodeRunnable = Runnable { geocodeAddress() }
+    private var geocodeJob: Job? = null
 
     private val fusedLocationClient by lazy {
         LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -96,35 +99,33 @@ class CheckoutFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
-                geocodeHandler.removeCallbacks(geocodeRunnable)
+                geocodeJob?.cancel()
                 val text = s?.toString()?.trim().orEmpty()
-                if (text.length >= 8) geocodeHandler.postDelayed(geocodeRunnable, 800)
+                if (text.length >= 8) geocodeAddress(text)
             }
         })
     }
 
-    private fun geocodeAddress() {
-        val address = binding.etAddress.text?.toString()?.trim().orEmpty()
-        if (address.length < 8 || !Geocoder.isPresent()) return
-        geocodeThread?.interrupt()
-        geocodeThread = Thread {
-            val point = try {
-                Geocoder(requireContext()).getFromLocationName(address, 1)?.firstOrNull()
-            } catch (_: Exception) {
-                null
+    // Espera 800 ms sin cambios antes de geocodificar; cada tecla cancela la
+    // búsqueda anterior y el resultado se descarta si la vista ya no existe.
+    @Suppress("DEPRECATION")
+    private fun geocodeAddress(address: String) {
+        if (!Geocoder.isPresent()) return
+        val geocoder = Geocoder(requireContext())
+        geocodeJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(800)
+            val point = withContext(Dispatchers.IO) {
+                runCatching { geocoder.getFromLocationName(address, 1)?.firstOrNull() }.getOrNull()
+            } ?: return@launch
+            capturedLocation = Location("").apply {
+                latitude = point.latitude
+                longitude = point.longitude
             }
-            view?.post {
-                if (_binding == null || point == null) return@post
-                capturedLocation = Location("").apply {
-                    latitude = point.latitude
-                    longitude = point.longitude
-                }
-                binding.tvLocationStatus.visibility = View.VISIBLE
-                binding.tvLocationStatus.text = getString(
-                    R.string.address_located, point.latitude, point.longitude
-                )
-            }
-        }.also { it.start() }
+            binding.tvLocationStatus.visibility = View.VISIBLE
+            binding.tvLocationStatus.text = getString(
+                R.string.address_located, point.latitude, point.longitude
+            )
+        }
     }
 
     private fun hasLocationPermission(): Boolean =
@@ -132,8 +133,15 @@ class CheckoutFragment : Fragment() {
             PackageManager.PERMISSION_GRANTED
 
     private fun fetchLocation() {
-        fusedLocationClient
-            .getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, CancellationTokenSource().token)
+        val request = try {
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_BALANCED_POWER_ACCURACY, CancellationTokenSource().token
+            )
+        } catch (_: SecurityException) {
+            Toast.makeText(requireContext(), R.string.location_permission_denied, Toast.LENGTH_LONG).show()
+            return
+        }
+        request
             .addOnSuccessListener { location ->
                 if (_binding == null) return@addOnSuccessListener
                 if (location != null) {
@@ -167,27 +175,29 @@ class CheckoutFragment : Fragment() {
             mapOf("latitude" to it.latitude, "longitude" to it.longitude)
         }
         binding.btnPay.isEnabled = false
+        val total = cartViewModel.total.value ?: 0
         OrderRepository.checkout(uid, address, location, { id ->
             if (_binding != null) {
-                MaterialAlertDialogBuilder(requireContext())
+                val ctx = requireContext()
+                val goToOrders = { if (isAdded) findNavController().navigate(R.id.navigation_buyer_orders) }
+                MaterialAlertDialogBuilder(ctx)
                     .setTitle(R.string.order_created_title)
                     .setMessage(getString(R.string.order_created_message, id))
-                    .setPositiveButton(R.string.btn_accept) { _, _ ->
-                        findNavController().navigate(R.id.navigation_buyer_orders)
-                    }.show()
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.btn_pay_now) { _, _ -> SandboxPayment.show(ctx, id, total) { goToOrders() } }
+                    .setNegativeButton(R.string.btn_pay_later) { _, _ -> goToOrders() }
+                    .show()
             }
         }, { error ->
             if (_binding != null) {
                 binding.btnPay.isEnabled = true
-                Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), error.userMessage(requireContext()), Toast.LENGTH_LONG).show()
             }
         })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        geocodeHandler.removeCallbacks(geocodeRunnable)
-        geocodeThread?.interrupt()
         _binding = null
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.garcia.cosechalocal.R
 import com.garcia.cosechalocal.databinding.FragmentCartBinding
 import com.garcia.cosechalocal.utils.FormatUtils
+import com.garcia.cosechalocal.utils.userMessage
 
 class CartFragment : Fragment() {
 
@@ -60,7 +61,7 @@ class CartFragment : Fragment() {
         cartViewModel.loading.observe(viewLifecycleOwner) { binding.btnCheckout.isEnabled = !it }
         cartViewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
-                Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), error.userMessage(requireContext()), Toast.LENGTH_LONG).show()
                 cartViewModel.clearError()
             }
         }
