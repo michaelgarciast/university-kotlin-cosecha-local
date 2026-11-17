@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -20,6 +19,7 @@ import com.garcia.cosechalocal.data.model.UserProfile
 import com.garcia.cosechalocal.databinding.FragmentLoginBinding
 import com.garcia.cosechalocal.ui.common.UserRole
 import com.garcia.cosechalocal.ui.main.MainActivity
+import com.garcia.cosechalocal.utils.BiometricLock
 
 class LoginFragment : Fragment() {
 
@@ -56,8 +56,10 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
+        updateBiometricButton()
         if (AuthRepository.currentUser != null) {
-            loadCurrentProfile()
+            if (BiometricLock.isEnabledFor(AuthRepository.currentUser?.uid)) showBiometricPrompt()
+            else loadCurrentProfile()
         }
     }
 
@@ -164,50 +166,55 @@ class LoginFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
+    // Con huella activada la sesión guardada no se restaura sola: hace falta
+    // desbloquearla. Cancelar o fallar deja al usuario en el login sin entrar.
     private fun showBiometricPrompt() {
-        if (AuthRepository.currentUser == null) {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.biometric_requires_login),
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-
         val context = requireContext()
-        val biometricManager = BiometricManager.from(context)
-        val canAuthenticate = biometricManager.canAuthenticate(
-            BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.BIOMETRIC_WEAK
-        )
-
-        if (canAuthenticate != BiometricManager.BIOMETRIC_SUCCESS) {
+        if (AuthRepository.currentUser == null || !BiometricLock.isAvailable(context)) {
+            updateBiometricButton()
             Toast.makeText(context, getString(R.string.biometric_error), Toast.LENGTH_SHORT).show()
             return
         }
 
-        val executor = ContextCompat.getMainExecutor(context)
-        val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(getString(R.string.biometric_prompt_title))
-            .setSubtitle(getString(R.string.biometric_prompt_subtitle))
-            .setNegativeButtonText(getString(R.string.biometric_prompt_cancel))
-            .build()
+        val cipher = runCatching { BiometricLock.createCipher() }.getOrElse {
+            AuthRepository.signOut()
+            updateBiometricButton()
+            Toast.makeText(context, getString(R.string.biometric_invalidated), Toast.LENGTH_LONG).show()
+            return
+        }
 
-        val biometricPrompt = BiometricPrompt(this, executor,
+        val promptInfo = BiometricLock.promptInfo(
+            getString(R.string.biometric_prompt_title),
+            getString(R.string.biometric_prompt_subtitle),
+            getString(R.string.biometric_prompt_cancel)
+        )
+
+        val biometricPrompt = BiometricPrompt(this, ContextCompat.getMainExecutor(context),
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    loadCurrentProfile()
+                    if (BiometricLock.verify(result)) loadCurrentProfile() else showBiometricFailure()
                 }
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    if (isAdded) {
+                    if (isAdded && errorCode != BiometricPrompt.ERROR_USER_CANCELED &&
+                        errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON &&
+                        errorCode != BiometricPrompt.ERROR_CANCELED
+                    ) {
                         Toast.makeText(requireContext(), errString, Toast.LENGTH_SHORT).show()
                     }
                 }
             })
 
-        biometricPrompt.authenticate(promptInfo)
+        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+    }
+
+    private fun showBiometricFailure() {
+        if (isAdded) Toast.makeText(requireContext(), getString(R.string.biometric_error), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateBiometricButton() {
+        _binding?.btnFingerprint?.visibility =
+            if (BiometricLock.isEnabledFor(AuthRepository.currentUser?.uid)) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {

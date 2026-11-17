@@ -52,6 +52,14 @@
             android:textSize="@dimen/text_size_body" />
     </LinearLayout>
 
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchBiometric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:text="@string/biometric_switch"
+        android:textColor="@color/text_primary" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
         style="@style/Widget.CosechaLocal.Button.Secondary"

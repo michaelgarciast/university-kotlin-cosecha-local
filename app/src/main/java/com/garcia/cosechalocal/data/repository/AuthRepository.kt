@@ -2,6 +2,7 @@ package com.garcia.cosechalocal.data.repository
 
 import com.garcia.cosechalocal.data.model.UserProfile
 import com.garcia.cosechalocal.ui.common.UserRole
+import com.garcia.cosechalocal.utils.BiometricLock
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +19,7 @@ object AuthRepository {
     val currentUser get() = auth.currentUser
 
     fun signOut() {
+        BiometricLock.disable()
         auth.signOut()
     }
 
@@ -48,12 +50,12 @@ object AuthRepository {
 
                 firestore.collection("users").document(user.uid).set(profile)
                     .addOnSuccessListener {
-                        auth.signOut()
+                        signOut()
                         onSuccess()
                     }
                     .addOnFailureListener { error ->
                         user.delete().addOnCompleteListener {
-                            auth.signOut()
+                            signOut()
                             onError(error)
                         }
                     }
@@ -74,6 +76,7 @@ object AuthRepository {
                     onError(MissingProfileException())
                     return@addOnSuccessListener
                 }
+                if (!BiometricLock.isEnabledFor(uid)) BiometricLock.disable()
                 loadProfile(uid, onSuccess, onError)
             }
             .addOnFailureListener(onError)
@@ -109,7 +112,7 @@ object AuthRepository {
         firestore.collection("users").document(uid).get()
             .addOnSuccessListener { document ->
                 if (!document.exists()) {
-                    auth.signOut()
+                    signOut()
                     onError(MissingProfileException())
                     return@addOnSuccessListener
                 }
@@ -119,13 +122,13 @@ object AuthRepository {
                 }.getOrNull()
 
                 if (role == null) {
-                    auth.signOut()
+                    signOut()
                     onError(InvalidRoleException())
                     return@addOnSuccessListener
                 }
 
                 if (document.getBoolean("active") != true) {
-                    auth.signOut()
+                    signOut()
                     onError(AccountDisabledException())
                     return@addOnSuccessListener
                 }
@@ -141,7 +144,7 @@ object AuthRepository {
                 )
             }
             .addOnFailureListener { error ->
-                auth.signOut()
+                signOut()
                 onError(error)
             }
     }

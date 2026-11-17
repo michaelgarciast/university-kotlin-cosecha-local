@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.garcia.cosechalocal.data.repository.AuthRepository
 import com.garcia.cosechalocal.databinding.FragmentAdminSettingsBinding
 import com.garcia.cosechalocal.ui.common.logoutToLogin
+import com.garcia.cosechalocal.ui.common.setupBiometricSwitch
 
 class AdminSettingsFragment : Fragment() {
 
@@ -33,6 +34,7 @@ class AdminSettingsFragment : Fragment() {
             }
         )
 
+        setupBiometricSwitch(binding.switchBiometric)
         binding.btnLogout.setOnClickListener { logoutToLogin() }
     }
 
