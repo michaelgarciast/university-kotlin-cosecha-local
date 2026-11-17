@@ -70,9 +70,6 @@ class ProductFormFragment : Fragment() {
         binding.btnTakePhoto.setOnClickListener { launchCamera() }
         binding.btnPickImage.setOnClickListener { pickImage.launch("image/*") }
         binding.btnRemovePhoto.setOnClickListener { removeImage() }
-        binding.btnUseLocation.setOnClickListener {
-            Snackbar.make(binding.root, R.string.location_simulated, Snackbar.LENGTH_SHORT).show()
-        }
         binding.btnSave.setOnClickListener { save() }
     }
 
@@ -106,7 +103,7 @@ class ProductFormFragment : Fragment() {
         binding.actvCategory.setText(product.category, false)
         binding.etDescription.setText(product.description)
         if (product.hasLocalImage) {
-            ProductImageStore.bind(binding.ivFormImage, product.id, true)
+            ProductImageStore.bind(binding.ivFormImage, product.id, true, ProductImageStore.MAX_DIMENSION)
             binding.btnRemovePhoto.isVisible = true
         }
     }
@@ -189,7 +186,6 @@ class ProductFormFragment : Fragment() {
         binding.btnSave.isEnabled = enabled
         binding.btnTakePhoto.isEnabled = enabled
         binding.btnPickImage.isEnabled = enabled
-        binding.btnUseLocation.isEnabled = enabled
         binding.btnSave.alpha = if (enabled) 1f else 0.6f
     }
 

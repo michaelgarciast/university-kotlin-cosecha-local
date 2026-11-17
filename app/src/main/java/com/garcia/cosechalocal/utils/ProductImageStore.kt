@@ -25,7 +25,8 @@ import kotlin.math.roundToInt
 // dispositivo donde se cargaron: Firebase Storage exige plan de facturación.
 object ProductImageStore {
 
-    private const val MAX_DIMENSION = 1024
+    const val MAX_DIMENSION = 1024
+    const val THUMB_DIMENSION = 512
     private const val JPEG_QUALITY = 82
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -85,21 +86,32 @@ object ProductImageStore {
         return output.toByteArray()
     }
 
-    fun decode(imageData: ByteArray): Bitmap? =
-        BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+    // Decodifica con inSampleSize para no cargar en memoria más píxeles de los
+    // que se van a mostrar (las listas usan THUMB_DIMENSION).
+    fun decode(imageData: ByteArray, maxDimension: Int = MAX_DIMENSION): Bitmap? {
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeByteArray(imageData, 0, imageData.size, bounds)
+        var sampleSize = 1
+        while (max(bounds.outWidth, bounds.outHeight) / (sampleSize * 2) >= maxDimension) {
+            sampleSize *= 2
+        }
+        val options = BitmapFactory.Options().apply { inSampleSize = sampleSize }
+        return BitmapFactory.decodeByteArray(imageData, 0, imageData.size, options)
+    }
 
-    fun bind(imageView: ImageView, product: Product) =
-        bind(imageView, product.id, product.hasLocalImage)
+    fun bind(imageView: ImageView, product: Product, maxDimension: Int = THUMB_DIMENSION) =
+        bind(imageView, product.id, product.hasLocalImage, maxDimension)
 
     // Pinta la foto local del producto en el ImageView. Si el producto no tiene
     // imagen o el BLOB no existe en este dispositivo, muestra el placeholder.
-    fun bind(imageView: ImageView, productId: String, hasImage: Boolean) {
+    fun bind(imageView: ImageView, productId: String, hasImage: Boolean, maxDimension: Int = THUMB_DIMENSION) {
         imageView.setTag(R.id.tag_product_image_id, productId)
         if (!hasImage) {
             showPlaceholder(imageView)
             return
         }
-        cache.get(productId)?.let {
+        val key = "$productId@$maxDimension"
+        cache.get(key)?.let {
             showBitmap(imageView, it)
             return
         }
@@ -108,28 +120,20 @@ object ProductImageStore {
             val bitmap = withContext(Dispatchers.IO) {
                 runCatching { repository(imageView.context).getImage(productId) }
                     .getOrNull()
-                    ?.let { decode(it.imageData) }
+                    ?.let { decode(it.imageData, maxDimension) }
             }
-            if (bitmap != null) cache.put(productId, bitmap)
+            if (bitmap != null) cache.put(key, bitmap)
             if (imageView.getTag(R.id.tag_product_image_id) == productId) {
                 if (bitmap != null) showBitmap(imageView, bitmap) else showPlaceholder(imageView)
             }
         }
     }
 
-    suspend fun saveImage(context: Context, productId: String, imageData: ByteArray) {
-        repository(context).saveImage(productId, imageData, "image/jpeg")
-        decode(imageData)?.let { cache.put(productId, it) }
-    }
-
-    suspend fun deleteImage(context: Context, productId: String) {
-        repository(context).deleteImage(productId)
-        cache.remove(productId)
-    }
-
     fun invalidate(productId: String) {
-        cache.remove(productId)
+        cache.snapshot().keys.filter { it.startsWith("$productId@") }.forEach(cache::remove)
     }
+
+    fun clearCache() = cache.evictAll()
 
     fun showBitmap(imageView: ImageView, bitmap: Bitmap) {
         rememberPadding(imageView)

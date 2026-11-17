@@ -75,7 +75,7 @@ class ProductDetailFragment : Fragment() {
                 String.format(Locale.getDefault(), "A %.1f km de tu ubicación", p.distanceKm)
         }
         binding.tvQuantity.text = currentQuantity.toString()
-        ProductImageStore.bind(binding.ivProductDetailImage, p)
+        ProductImageStore.bind(binding.ivProductDetailImage, p, ProductImageStore.MAX_DIMENSION)
     }
 
     private fun setupListeners() {

@@ -82,18 +82,6 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUseLocation"
-                style="@style/Widget.CosechaLocal.Button.Secondary"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_small"
-                android:layout_weight="1"
-                android:text="@string/btn_use_location"
-                android:textSize="@dimen/text_size_body"
-                app:icon="@drawable/ic_location"
-                app:iconGravity="textStart" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRemovePhoto"
                 style="@style/Widget.CosechaLocal.Button.Secondary"
                 android:layout_width="0dp"

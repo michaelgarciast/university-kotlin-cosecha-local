@@ -48,19 +48,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupCartBadgeObserver() {
-        cartViewModel.itemCount.observe(this) { count ->
-            val cartMenuItem = binding.bottomNavigation.menu.findItem(R.id.navigation_buyer_cart)
-            if (cartMenuItem != null) {
-                val badge = binding.bottomNavigation.getOrCreateBadge(R.id.navigation_buyer_cart)
-                if (count > 0) {
-                    badge.number = count
-                    badge.isVisible = true
-                    badge.backgroundColor = ContextCompat.getColor(this, R.color.amber_accent)
-                    badge.badgeTextColor = ContextCompat.getColor(this, R.color.dark_green)
-                } else {
-                    badge.isVisible = false
-                }
-            }
+        cartViewModel.itemCount.observe(this, ::updateCartBadge)
+    }
+
+    private fun updateCartBadge(count: Int) {
+        if (binding.bottomNavigation.menu.findItem(R.id.navigation_buyer_cart) == null) return
+        val badge = binding.bottomNavigation.getOrCreateBadge(R.id.navigation_buyer_cart)
+        badge.isVisible = count > 0
+        if (count > 0) {
+            badge.number = count
+            badge.backgroundColor = ContextCompat.getColor(this, R.color.amber_accent)
+            badge.badgeTextColor = ContextCompat.getColor(this, R.color.dark_green)
         }
     }
 
@@ -82,18 +80,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.inflateMenu(menuRes)
         binding.bottomNavigation.setupWithNavController(navController)
 
-        if (role == UserRole.BUYER) {
-            val count = cartViewModel.itemCount.value ?: 0
-            val badge = binding.bottomNavigation.getOrCreateBadge(R.id.navigation_buyer_cart)
-            if (count > 0) {
-                badge.number = count
-                badge.isVisible = true
-                badge.backgroundColor = ContextCompat.getColor(this, R.color.amber_accent)
-                badge.badgeTextColor = ContextCompat.getColor(this, R.color.dark_green)
-            } else {
-                badge.isVisible = false
-            }
-        }
+        if (role == UserRole.BUYER) updateCartBadge(cartViewModel.itemCount.value ?: 0)
 
         navController.navigate(
             startDestId,

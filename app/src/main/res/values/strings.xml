@@ -85,8 +85,6 @@
     <string name="menu_admin_settings">Ajustes</string>
 
     <!-- Placeholders & Generic UI -->
-    <string name="placeholder_title">Pantalla en construcción</string>
-    <string name="placeholder_message">Estamos trabajando para traerte la mejor experiencia del campo colombiano en esta sección.</string>
     <string name="btn_logout">Cerrar sesión</string>
 
     <!-- Buyer Role - Home & Catalog -->
@@ -159,9 +157,6 @@
     <string name="buyer_orders_empty">Aún no tienes pedidos.</string>
     <string name="cancel_order">Cancelar pedido</string>
     <string name="order_detail_text">Productos: %1$s\nDirección: %2$s\nPago: %3$s\nTotal: %4$s</string>
-    <string name="error_select_payment">Por favor selecciona un método de pago</string>
-    <string name="checkout_dialog_title">¡Pago Exitoso!</string>
-    <string name="checkout_dialog_msg">¡Gracias por tu compra! Tu pedido se ha registrado correctamente.\n\nDirección de entrega:\n%1$s\n\nMétodo de pago:\n%2$s\n\nTotal pagado: %3$s</string>
     <string name="btn_accept">Aceptar</string>
 
     <!-- Profile -->
@@ -214,7 +209,6 @@
     <string name="btn_take_photo">Tomar foto</string>
     <string name="btn_pick_image">Elegir de galería</string>
     <string name="btn_remove_photo">Quitar foto</string>
-    <string name="location_simulated">Ubicación de la finca registrada (simulado)</string>
     <string name="error_image_processing">No se pudo procesar la imagen seleccionada</string>
     <string name="error_product_save">No se pudo guardar el producto</string>
     <string name="error_product_delete">No se pudo eliminar el producto</string>
