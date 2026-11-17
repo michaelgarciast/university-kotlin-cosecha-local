@@ -13,9 +13,7 @@ local.properties
 google-services.json
 
 # Documentos internos del proyecto: solo locales
-firestore.rules
 PLAN_FASE_2.md
-FIREBASE_DATA_MODEL.md
 
 # Claves de firma de release (nunca se suben)
 *.jks

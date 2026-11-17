@@ -1,0 +1,272 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userRef() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+
+    function userExists() {
+      return signedIn() && exists(userRef());
+    }
+
+    function userData() {
+      return get(userRef()).data;
+    }
+
+    function isActiveUser() {
+      return userExists() && userData().active == true;
+    }
+
+    function hasRole(role) {
+      return isActiveUser() && userData().role == role;
+    }
+
+    function isAdmin() {
+      return hasRole("ADMIN");
+    }
+
+    function isSeller() {
+      return hasRole("SELLER");
+    }
+
+    function isBuyer() {
+      return hasRole("BUYER");
+    }
+
+    function cartRef() {
+      return /databases/$(database)/documents/carts/$(request.auth.uid);
+    }
+
+    function productFor(item) {
+      return get(/databases/$(database)/documents/products/$(item.productId)).data;
+    }
+
+    function validLine(index) {
+      let line = request.resource.data.items[index];
+      let cartLine = get(cartRef()).data.items[index];
+      let product = productFor(line);
+      return line.keys().hasOnly([
+          "productId", "sellerId", "name", "unitPrice", "quantity", "subtotal"
+        ])
+        && line.productId is string
+        && line.productId == cartLine.productId
+        && line.quantity == cartLine.quantity
+        && line.quantity is int
+        && line.quantity > 0
+        && product.status == "APROBADO"
+        && product.stock >= line.quantity
+        && product.price == line.unitPrice
+        && product.sellerId == line.sellerId
+        && product.name == line.name
+        && line.subtotal == line.quantity * line.unitPrice
+        && line.sellerId in request.resource.data.sellerIds;
+    }
+
+    function validLines() {
+      let count = request.resource.data.items.size();
+      return count > 0 && count <= 5
+        && count == get(cartRef()).data.items.size()
+        && validLine(0)
+        && (count < 2 || validLine(1))
+        && (count < 3 || validLine(2))
+        && (count < 4 || validLine(3))
+        && (count < 5 || validLine(4));
+    }
+
+    function lineAmount(index) {
+      return request.resource.data.items.size() > index
+        ? request.resource.data.items[index].subtotal : 0;
+    }
+
+    function itemSellers() {
+      let items = request.resource.data.items;
+      return items.size() == 1 ? [items[0].sellerId]
+        : items.size() == 2 ? [items[0].sellerId, items[1].sellerId]
+        : items.size() == 3 ? [items[0].sellerId, items[1].sellerId, items[2].sellerId]
+        : items.size() == 4 ? [items[0].sellerId, items[1].sellerId, items[2].sellerId, items[3].sellerId]
+        : [items[0].sellerId, items[1].sellerId, items[2].sellerId, items[3].sellerId, items[4].sellerId];
+    }
+
+    function orderQty(items, index, productId) {
+      return items.size() > index && items[index].productId == productId
+        ? items[index].quantity : 0;
+    }
+
+    // El comprador solo descuenta stock en la misma transacción que aprueba su
+    // orden (antes no aprobada) y exactamente por la cantidad pedida.
+    function validStockDiscount(productId, orderId) {
+      let path = /databases/$(database)/documents/orders/$(orderId);
+      let before = get(path).data;
+      let after = getAfter(path).data;
+      let qty = orderQty(after.items, 0, productId) + orderQty(after.items, 1, productId)
+        + orderQty(after.items, 2, productId) + orderQty(after.items, 3, productId)
+        + orderQty(after.items, 4, productId);
+      return after.buyerId == request.auth.uid
+        && before.paymentStatus != "APROBADO"
+        && after.paymentStatus == "APROBADO"
+        && qty > 0
+        && resource.data.stock - request.resource.data.stock == qty;
+    }
+
+    match /users/{userId} {
+      allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
+
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly([
+          "name", "email", "role", "active", "createdAt", "updatedAt"
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.email is string
+        && request.resource.data.role in ["BUYER", "SELLER", "ADMIN"]
+        && request.resource.data.active is bool
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp
+        && (
+          isAdmin()
+          || (request.auth.uid == userId
+            && request.resource.data.email == request.auth.token.email
+            && request.resource.data.role in ["BUYER", "SELLER"]
+            && request.resource.data.active == true)
+        );
+
+      allow update: if isAdmin()
+        || (signedIn()
+          && request.auth.uid == userId
+          && isActiveUser()
+          && request.resource.data.role == resource.data.role
+          && request.resource.data.active == resource.data.active
+          && request.resource.data.email == request.auth.token.email
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            "name", "email", "updatedAt"
+          ]));
+
+      allow delete: if isAdmin();
+    }
+
+    match /products/{productId} {
+      allow read: if resource.data.status == "APROBADO"
+        || isAdmin()
+        || (isSeller() && resource.data.sellerId == request.auth.uid);
+
+      allow create: if isSeller()
+        && request.resource.data.keys().hasOnly([
+          "sellerId", "sellerName", "name", "price", "stock", "category",
+          "description", "hasLocalImage", "status", "createdAt", "updatedAt"
+        ])
+        && request.resource.data.sellerId == request.auth.uid
+        && request.resource.data.sellerName is string
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.price is number
+        && request.resource.data.price >= 0
+        && request.resource.data.stock is number
+        && request.resource.data.stock >= 0
+        && request.resource.data.category is string
+        && request.resource.data.description is string
+        && request.resource.data.hasLocalImage is bool
+        && request.resource.data.status == "POR_APROBAR"
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp;
+
+      allow update: if isAdmin()
+        || (isSeller()
+          && resource.data.sellerId == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            "name", "price", "stock", "category", "description",
+            "hasLocalImage", "updatedAt"
+          ]))
+        || (isBuyer()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            "stock", "lastOrderId", "updatedAt"
+          ])
+          && request.resource.data.lastOrderId is string
+          && request.resource.data.stock is int
+          && request.resource.data.stock >= 0
+          && validStockDiscount(productId, request.resource.data.lastOrderId));
+
+      allow delete: if isAdmin()
+        || (isSeller() && resource.data.sellerId == request.auth.uid);
+    }
+
+    match /carts/{buyerId} {
+      allow read: if isBuyer() && request.auth.uid == buyerId;
+      allow create, update: if isBuyer() && request.auth.uid == buyerId
+        && request.resource.data.keys().hasOnly(["items", "shippingFee", "checkoutId", "updatedAt"])
+        && request.resource.data.items is list
+        && request.resource.data.items.size() <= 5
+        && request.resource.data.shippingFee == 7000
+        && request.resource.data.checkoutId is string
+        && request.resource.data.updatedAt is timestamp;
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAdmin()
+        || (isBuyer() && resource.data.buyerId == request.auth.uid)
+        || (isSeller() && request.auth.uid in resource.data.sellerIds);
+
+      allow create: if isBuyer()
+        && request.resource.data.keys().hasOnly([
+          "buyerId", "buyerName", "items", "sellerIds", "deliveryAddress",
+          "location", "subtotal", "shippingFee", "total", "paymentStatus",
+          "deliveryStatus", "createdAt", "updatedAt"
+        ])
+        && request.resource.data.buyerId == request.auth.uid
+        && request.resource.data.buyerName == userData().name
+        && request.resource.data.items is list
+        && request.resource.data.sellerIds is list
+        && request.resource.data.sellerIds.size() > 0
+        && request.resource.data.sellerIds.size() <= request.resource.data.items.size()
+        && request.resource.data.sellerIds.size() == request.resource.data.sellerIds.toSet().size()
+        && request.resource.data.sellerIds.toSet() == itemSellers().toSet()
+        && request.resource.data.deliveryAddress is string
+        && request.resource.data.deliveryAddress.size() > 0
+        && request.resource.data.deliveryAddress.size() <= 500
+        && (!request.resource.data.keys().hasAny(["location"])
+          || (request.resource.data.location is map
+            && request.resource.data.location.keys().hasOnly(["latitude", "longitude"])
+            && request.resource.data.location.latitude is number
+            && request.resource.data.location.longitude is number))
+        && orderId == get(cartRef()).data.checkoutId
+        && getAfter(cartRef()).data.items.size() == 0
+        && getAfter(cartRef()).data.checkoutId != orderId
+        && validLines()
+        && request.resource.data.subtotal == (
+          lineAmount(0) + lineAmount(1) + lineAmount(2) + lineAmount(3) + lineAmount(4)
+        )
+        && request.resource.data.shippingFee == 7000
+        && request.resource.data.total == request.resource.data.subtotal + 7000
+        && request.resource.data.paymentStatus == "PENDIENTE_PAGO"
+        && request.resource.data.deliveryStatus == "PENDIENTE"
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp;
+
+      allow update: if isAdmin()
+        || (isBuyer()
+          && resource.data.buyerId == request.auth.uid
+          && resource.data.paymentStatus in ["PENDIENTE_PAGO", "RECHAZADO"]
+          && (
+            (request.resource.data.paymentStatus == "CANCELADO"
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                "paymentStatus", "updatedAt"
+              ]))
+            || (request.resource.data.paymentStatus in ["APROBADO", "RECHAZADO"]
+              && request.resource.data.paymentProvider == "SANDBOX_SIMULADO"
+              && request.resource.data.paymentReference is string
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                "paymentStatus", "paymentProvider", "paymentReference", "updatedAt"
+              ]))
+          ));
+
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
